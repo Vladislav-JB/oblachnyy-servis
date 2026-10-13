@@ -583,7 +583,7 @@ function viewPartner(){
      '<p style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="withdraw">Вывести средства</button><button class="btn ghost" data-act="towallet">Перевести в кошелёк</button></p>'+
      '<div class="sim"><h3>🧪 Демонстрация для заказчика</h3><p class="note" style="margin:0">В рабочей версии это происходит само. Здесь — кнопки, чтобы быстро увидеть цепочку.</p><div class="row2">'+
      '<button class="btn sm ghost" data-act="siminv">Приглашённый зарегистрировался</button>'+
-     '<select class="in-t" id="simPlan"><option value="studio:y">Studio, год — 9 990 ₽</option><option value="pro:y">Pro, год — 4 990 ₽</option><option value="pro:m">Pro, месяц — 499 ₽</option><option value="solo:m">Solo, месяц — 199 ₽</option></select>'+
+     '<select class="in-t" id="simPlan"><option value="studio:y:3">3 приглашённых, Studio на год — 29 970 ₽</option><option value="studio:y">Studio, год — 9 990 ₽</option><option value="pro:y">Pro, год — 4 990 ₽</option><option value="pro:m">Pro, месяц — 499 ₽</option><option value="solo:m">Solo, месяц — 199 ₽</option></select>'+
      '<button class="btn sm" data-act="simbuy">Приглашённый купил тариф</button>'+
      '<button class="btn sm ghost" data-act="simskip">Прошло 14 дней</button></div></div>';
   } else if(t==='hist'){
@@ -701,10 +701,10 @@ document.addEventListener('click',function(e){
   else if(act==='towallet'){settle(false);if(S.pt.avail<=0){toast('Нет доступных средств');return}
     var s=S.pt.avail;S.pt.avail=0;S.wallet+=s;S.pt.hist.unshift({id:uid(),t:Date.now(),k:'Перевод в кошелёк',d:'внутри сервиса',s:-s,st:'Выплачено'});S.wh.unshift({t:Date.now(),k:'Партнёрские средства',s:s});renderApp();toast('Переведено в кошелёк: '+rub(s))}
   else if(act==='siminv'){S.pt.invited++;viewPartner();toast('Приглашённый зарегистрировался по вашей ссылке')}
-  else if(act==='simbuy'){var q=$('#simPlan').value.split(':'),p=plan(q[0]),price=q[1]==='m'?p.pm:p.py,cut=Math.round(price*10)/100,sid=uid();
-    if(S.pt.invited<=S.pt.bought)S.pt.invited++;
-    S.pt.bought++;S.pt.total+=cut;S.pt.hold.push({id:sid,sum:cut,rel:Date.now()+14*86400000});
-    S.pt.hist.unshift({id:sid,t:Date.now(),k:'Начисление 10%',d:'покупка «'+p.n+'», '+(q[1]==='m'?'месяц':'год')+' — '+rub(price),s:cut,st:'На удержании'});
+  else if(act==='simbuy'){var q=$('#simPlan').value.split(':'),p=plan(q[0]),n=+q[2]||1,price=(q[1]==='m'?p.pm:p.py)*n,cut=Math.round(price*10)/100,sid=uid();
+    S.pt.invited=Math.max(S.pt.invited+0,S.pt.bought+n);
+    S.pt.bought+=n;S.pt.total+=cut;S.pt.hold.push({id:sid,sum:cut,rel:Date.now()+14*86400000});
+    S.pt.hist.unshift({id:sid,t:Date.now(),k:'Начисление 10%',d:(n>1?n+' покупки «':'покупка «')+p.n+'», '+(q[1]==='m'?'месяц':'год')+' — '+rub(price),s:cut,st:'На удержании'});
     viewPartner();toast('Начислено '+rub(cut)+' — на удержании 14 дней')}
   else if(act==='simskip'){var mv=settle(true);viewPartner();toast(mv?'Удержание завершено: '+rub(mv)+' стало доступно':'Нет начислений на удержании')}
 });
