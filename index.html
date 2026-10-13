@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Тучка — облачное хранилище для файлов, клиентов и проектов</title>
-<meta name="description" content="Демо облачного сервиса: загрузка файлов, защищённые ссылки с паролем и сроком, сбор файлов от клиентов, рабочие пространства, просмотр в браузере.">
+<meta name="description" content="Демо облачного сервиса: файлы, защищённые ссылки, сбор файлов от клиентов, рабочие пространства, тарифы, кошелёк и партнёрская программа.">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap">
 <style>
-:root{--bg:#f5f8fc;--card:#fff;--ink:#14213d;--mut:#5b6b85;--line:#dfe6f1;--acc:#2f6bff;--acc2:#6aa2ff;--ok:#16a34a;--r:16px}
+:root{--bg:#f5f8fc;--card:#fff;--ink:#14213d;--mut:#5b6b85;--line:#dfe6f1;--acc:#2f6bff;--acc2:#6aa2ff;--ok:#16a34a;--warn:#b45309;--r:16px}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;font-family:Manrope,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-text-size-adjust:100%}
@@ -21,7 +21,8 @@ button,input,select{font:inherit}
 .btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
 .btn.sm{padding:8px 14px;font-size:14px;border-radius:10px}
 .btn.danger{background:#fff;color:#c0392b;border:1px solid #f1c4bf}
-header.top{position:sticky;top:0;z-index:20;background:rgba(245,248,252,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+header.top{position:sticky;top:0;z-index:20;background:rgba(245,248,252,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 header .in{display:flex;align-items:center;gap:20px;height:64px}
 .logo{font-weight:800;font-size:22px;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px}
 .logo i{width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,var(--acc),var(--acc2));display:inline-block;position:relative}
@@ -31,6 +32,7 @@ nav.m a{color:var(--mut);text-decoration:none;font-weight:600;font-size:15px}
 nav.m a:hover{color:var(--ink)}
 nav.m a.btn{color:#fff}
 nav.m a.btn.ghost{color:var(--ink)}
+.chip{font-size:13px;font-weight:700;background:#e8f0ff;color:var(--acc);padding:6px 10px;border-radius:99px;white-space:nowrap}
 .hero{padding:64px 0 40px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:center}
 .hero h1{font-size:clamp(30px,5vw,54px);line-height:1.08;margin:0 0 16px;letter-spacing:-.02em}
 .hero p{font-size:18px;color:var(--mut);margin:0 0 24px;max-width:520px}
@@ -45,30 +47,50 @@ nav.m a.btn.ghost{color:var(--ink)}
 .mock .t b{display:block;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mock .t span{font-size:12px;color:var(--mut)}
 .pill{font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;background:#e8f0ff;color:var(--acc);white-space:nowrap}
-section{padding:56px 0}
+.pill.ok{background:#e3f6ea;color:var(--ok)}.pill.wait{background:#fff1dc;color:var(--warn)}
+section{padding:48px 0}
 h2{font-size:clamp(26px,3.4vw,38px);margin:0 0 12px;letter-spacing:-.015em}
-.lead{color:var(--mut);max-width:640px;margin:0 0 32px;font-size:17px}
+h1.pg{font-size:clamp(28px,4vw,44px);margin:40px 0 12px;letter-spacing:-.02em;line-height:1.1}
+.lead{color:var(--mut);max-width:680px;margin:0 0 28px;font-size:17px}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px}
 .card h3{margin:12px 0 6px;font-size:18px}
 .card p{margin:0;color:var(--mut);font-size:15px}
 .card .em{font-size:26px}
+a.card{text-decoration:none;color:inherit;display:block;transition:.15s}
+a.card:hover{border-color:var(--acc2);transform:translateY(-2px)}
 .steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;counter-reset:s}
 .steps .card:before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--acc);color:#fff;font-weight:800}
-.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:stretch}
-.plan{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px;display:flex;flex-direction:column}
+.plans{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;align-items:stretch}
+.plan{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;position:relative}
 .plan.hot{border:2px solid var(--acc);box-shadow:0 16px 40px -20px rgba(47,107,255,.5)}
+.plan.cur{border:2px solid var(--ok)}
 .plan h3{margin:0}
-.plan .pr{font-size:34px;font-weight:800;margin:6px 0}
-.plan .pr small{font-size:15px;color:var(--mut);font-weight:600}
+.plan .pr{font-size:30px;font-weight:800;margin:6px 0 0}
+.plan .pr small{font-size:14px;color:var(--mut);font-weight:600}
+.plan .sub{font-size:13px;color:var(--mut);min-height:20px}
 .plan ul{padding:0;margin:14px 0 20px;list-style:none;color:var(--mut);font-size:15px;flex:1}
 .plan li{padding:5px 0 5px 24px;position:relative}
 .plan li:before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:800}
+.plan li.no:before{content:"–";color:#9aa8bf}
+.seg{display:inline-flex;background:#e8eef8;border-radius:12px;padding:4px;margin-bottom:24px}
+.seg button{border:0;background:none;padding:8px 16px;border-radius:9px;font-weight:700;cursor:pointer;color:var(--mut)}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(20,33,61,.12)}
 .faq details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:10px}
 .faq summary{cursor:pointer;font-weight:700}
 .faq p{color:var(--mut);margin:10px 0 0}
-footer{border-top:1px solid var(--line);padding:28px 0;color:var(--mut);font-size:14px}
-footer .in{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between}
+.prose{max-width:760px}
+.prose h2{font-size:24px;margin:28px 0 8px}
+.prose p,.prose li{color:#33415c;font-size:16px}
+.prose ul{padding-left:20px}
+.crumb{font-size:14px;color:var(--mut);margin-top:24px}
+.crumb a{text-decoration:none}
+footer{border-top:1px solid var(--line);padding:32px 0;color:var(--mut);font-size:14px;margin-top:24px}
+footer .cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-bottom:20px}
+footer h5{margin:0 0 8px;color:var(--ink);font-size:14px}
+footer a{display:block;color:var(--mut);text-decoration:none;padding:3px 0}
+footer a:hover{color:var(--acc)}
+footer .in{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;border-top:1px solid var(--line);padding-top:16px}
 #app{display:none}
 body.app #site{display:none}
 body.app #app{display:block}
@@ -94,8 +116,24 @@ body.app #app{display:block}
 .f .t{flex:1;min-width:0}
 .f .t b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
 .f .t span{font-size:13px;color:var(--mut)}
-.f .act{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.f .act{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
+.f .sum{font-weight:800;white-space:nowrap}
 .empty{padding:36px;text-align:center;color:var(--mut)}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.kpi span{font-size:13px;color:var(--mut)}
+.kpi b{display:block;font-size:24px;margin-top:2px}
+.tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.tabs button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:8px 16px;font-weight:700;cursor:pointer}
+.tabs button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.reflink{display:flex;gap:8px;margin:8px 0}
+.reflink input{flex:1;min-width:0}
+.box2{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-bottom:16px}
+.box2 h3{margin:0 0 8px;font-size:17px}
+.sim{background:#fffbe9;border:1px dashed #e5c76b;border-radius:var(--r);padding:16px;margin-bottom:16px}
+.sim h3{margin:0 0 4px;font-size:15px}
+.sim .row2{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.sim select{width:auto}
 .modal{position:fixed;inset:0;background:rgba(20,33,61,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
 .modal.on{display:flex}
 .box{background:#fff;border-radius:20px;padding:24px;width:100%;max-width:520px;max-height:90vh;overflow:auto}
@@ -104,6 +142,7 @@ body.app #app{display:block}
 label.fl{display:block;font-weight:700;font-size:14px;margin:12px 0 6px}
 .in-t{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:#fff}
 .in-t:focus{outline:2px solid var(--acc2);border-color:var(--acc)}
+.in-t[disabled]{background:#f1f4f9;color:#8a97ad}
 .chk{display:flex;gap:10px;align-items:center;margin:12px 0}
 .linkbox{display:flex;gap:8px;margin-top:12px}
 .linkbox input{flex:1;min-width:0}
@@ -114,10 +153,13 @@ label.fl{display:block;font-weight:700;font-size:14px;margin:12px 0 6px}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:80;max-width:90vw}
 .toast.on{opacity:1;transform:translateX(-50%)}
 .note{font-size:13px;color:var(--mut);margin-top:10px}
+.err{color:#c0392b;font-size:13px;margin-top:6px;display:none}
+.lock{background:#fff7e6;border:1px solid #f3d9a4;color:#7a5200;border-radius:10px;padding:10px 12px;font-size:13px;margin-top:10px}
 .mob-nav{display:none}
+@media(max-width:1000px){.plans{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:900px){
  .hero{grid-template-columns:minmax(0,1fr);padding-top:36px}
- .grid,.steps,.plans{grid-template-columns:minmax(0,1fr)}
+ .grid,.steps,.plans,.kpis,footer .cols{grid-template-columns:minmax(0,1fr)}
  nav.m a.h{display:none}
  nav.m{gap:8px}
  .logo{font-size:20px}
@@ -130,107 +172,54 @@ label.fl{display:block;font-weight:700;font-size:14px;margin:12px 0 6px}
  .f{flex-wrap:wrap}
  .f .act{width:100%;justify-content:flex-start}
 }
-@media(max-width:480px){nav.m a.btn.ghost{display:none}}
+@media(max-width:480px){nav.m a.btn.ghost,.chip.hide-s{display:none}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
 <header class="top"><div class="wrap in">
-  <a class="logo" href="#" id="goHome"><i></i>Тучка</a>
-  <nav class="m">
-    <a class="h" href="#kak" data-site>Возможности</a>
-    <a class="h" href="#tarify" data-site>Тарифы</a>
-    <a class="h" href="#faq" data-site>Вопросы</a>
-    <a class="btn sm ghost" href="#" id="goApp1">Войти</a>
-    <a class="btn sm" href="#" id="goApp2">Начать бесплатно</a>
-  </nav>
+  <a class="logo" href="#/"><i></i>Тучка</a>
+  <nav class="m" id="nav"></nav>
 </div></header>
 
-<div id="site">
-<main class="wrap">
-  <div class="hero">
-    <div>
-      <h1>Файлы клиентов и проектов — в одном облаке</h1>
-      <p>Загружайте, отправляйте защищённые ссылки и собирайте материалы от клиентов без регистрации. Просмотр файлов прямо в браузере.</p>
-      <div class="cta"><a class="btn" href="#" id="goApp3">Попробовать демо</a><a class="btn ghost" href="#tarify" data-site>Тарифы</a></div>
-      <small>Бесплатно 2 ГБ · без привязки карты · без рекламы</small>
-    </div>
-    <div class="mock" aria-hidden="true">
-      <div class="row"><span class="ic pdf">PDF</span><div class="t"><b>Договор_подряд.pdf</b><span>1,8 МБ · пространство «Ремонт»</span></div><span class="pill">по паролю</span></div>
-      <div class="row"><span class="ic img">ZIP</span><div class="t"><b>Макеты_лендинг.zip</b><span>248 МБ · ссылка до 30 октября</span></div><span class="pill">ссылка</span></div>
-      <div class="row"><span class="ic vid">MP4</span><div class="t"><b>Видео_для_клиента.mp4</b><span>412 МБ · просмотр в браузере</span></div><span class="pill">просмотр</span></div>
-      <div class="row"><span class="ic xls">XLS</span><div class="t"><b>Смета_октябрь.xlsx</b><span>96 КБ · загружено клиентом</span></div><span class="pill">сбор</span></div>
-    </div>
+<div id="site"><main class="wrap" id="page"></main>
+<footer><div class="wrap">
+  <div class="cols">
+    <div><h5>Сервис</h5><a href="#/pricing">Тарифы</a><a href="#/blog">Блог</a><a href="#/p/send-large-files">Передача больших файлов</a><a href="#/p/secure-file-sharing">Безопасная передача файлов</a></div>
+    <div><h5>Возможности</h5><a href="#/p/file-requests">Запрос файлов</a><a href="#/p/protected-links">Защищённые ссылки</a><a href="#/p/workspaces">Рабочие пространства</a><a href="#/p/freelancers">Для фрилансеров</a><a href="#/p/designers">Для дизайнеров</a></div>
+    <div><h5>Документы</h5><a href="#/l/about">О сервисе</a><a href="#/l/support">Поддержка</a><a href="#/l/privacy">Конфиденциальность</a><a href="#/l/terms">Условия использования</a><a href="#/l/refund">Возврат и отмена</a><a href="#/l/abuse">Правила использования</a></div>
   </div>
-
-  <section id="kak">
-    <h2>Всё, что нужно для работы с файлами</h2>
-    <p class="lead">Шесть задач, ради которых сервис и сделан. Каждую можно попробовать в демо-кабинете.</p>
-    <div class="grid">
-      <div class="card"><div class="em">⬆️</div><h3>Быстрая загрузка</h3><p>Файлы и целые папки — перетаскиванием. Большие файлы без лишних ограничений.</p></div>
-      <div class="card"><div class="em">🔗</div><h3>Защищённые ссылки</h3><p>Пароль и срок действия для любого файла или папки. Получателю аккаунт не нужен.</p></div>
-      <div class="card"><div class="em">📥</div><h3>Сбор файлов</h3><p>Клиент открывает вашу страницу и загружает материалы сам — без регистрации.</p></div>
-      <div class="card"><div class="em">🗂️</div><h3>Рабочие пространства</h3><p>Отдельное место под каждого клиента или проект, участники и права доступа.</p></div>
-      <div class="card"><div class="em">👁️</div><h3>Просмотр в браузере</h3><p>Фото, видео, аудио, PDF и документы открываются без скачивания.</p></div>
-      <div class="card"><div class="em">📱</div><h3>На любом устройстве</h3><p>Компьютер, планшет, телефон. Реклама не показывается.</p></div>
-    </div>
-  </section>
-
-  <section>
-    <h2>Как это работает</h2>
-    <p class="lead">Три шага — и файл у получателя.</p>
-    <div class="steps">
-      <div class="card"><h3>Загрузите</h3><p>Перетащите файлы в окно или нажмите «Загрузить».</p></div>
-      <div class="card"><h3>Настройте ссылку</h3><p>Задайте пароль и срок — или оставьте открытой.</p></div>
-      <div class="card"><h3>Отправьте</h3><p>Получатель открывает ссылку и смотрит файл в браузере.</p></div>
-    </div>
-  </section>
-
-  <section id="tarify">
-    <h2>Тарифы</h2>
-    <p class="lead">Начните бесплатно — перейти на платный можно в любой момент. Цены в демо условные.</p>
-    <div class="plans">
-      <div class="plan"><h3>Старт</h3><div class="pr">0 ₽</div><ul><li>2 ГБ места</li><li>Ссылки на файлы</li><li>Просмотр в браузере</li><li>1 рабочее пространство</li></ul><a class="btn ghost goApp" href="#">Начать бесплатно</a></div>
-      <div class="plan hot"><h3>Pro</h3><div class="pr">490 ₽ <small>/ мес</small></div><ul><li>200 ГБ места</li><li>Пароль и срок ссылок</li><li>Сбор файлов от клиентов</li><li>10 пространств</li></ul><a class="btn goApp" href="#">Попробовать Pro</a></div>
-      <div class="plan"><h3>Студия</h3><div class="pr">1 490 ₽ <small>/ мес</small></div><ul><li>1 ТБ места</li><li>Команда до 10 человек</li><li>Права доступа по ролям</li><li>Приоритетная поддержка</li></ul><a class="btn ghost goApp" href="#">Выбрать Студию</a></div>
-    </div>
-  </section>
-
-  <section id="faq" class="faq">
-    <h2>Частые вопросы</h2>
-    <details><summary>Нужен ли аккаунт получателю?</summary><p>Нет. Получатель открывает ссылку и смотрит или скачивает файл. Для страницы сбора файлов регистрация тоже не нужна.</p></details>
-    <details><summary>Что будет, если закончится место?</summary><p>Старые файлы остаются доступными, новые загрузки приостанавливаются, пока вы не освободите место или не перейдёте на другой тариф. Мы ничего не удаляем автоматически.</p></details>
-    <details><summary>Можно ли отменить подписку?</summary><p>Да, в любой момент. Списания прекратятся, а доступ сохранится до конца оплаченного периода.</p></details>
-    <details><summary>Это рабочий сервис?</summary><p>Это демонстрационный прототип интерфейса: файлы хранятся только в вашем браузере и пропадают при обновлении страницы. Серверная часть — следующий этап.</p></details>
-  </section>
-</main>
+  <div class="in"><span>© Тучка — демонстрационный проект</span><span>Создан в «Веб-Ателье»</span></div>
+</div></footer>
 </div>
 
 <div id="app">
   <div class="mob-nav" id="mobNav"></div>
   <div class="shell">
-    <aside class="side">
-      <button class="nv on" data-v="files">📁 Все файлы <span class="cnt" id="cFiles">0</span></button>
-      <button class="nv" data-v="links">🔗 Мои ссылки <span class="cnt" id="cLinks">0</span></button>
-      <button class="nv" data-v="requests">📥 Сбор файлов <span class="cnt" id="cReq">0</span></button>
-      <h4>Пространства</h4>
-      <div id="wsList"></div>
-      <button class="nv" id="newWs">＋ Новое пространство</button>
-      <div class="quota">
-        <div id="qText">0 из 2 ГБ</div>
-        <div class="bar"><i id="qBar"></i></div>
-        <a href="#" class="goTariffs">Увеличить место</a>
-      </div>
-    </aside>
+    <aside class="side" id="side"></aside>
     <div class="main">
       <div class="bar-top"><h2 id="vTitle">Все файлы</h2><div id="vBtns"></div></div>
       <div id="view"></div>
-      <p class="note">Демо: файлы хранятся только в памяти вашего браузера и пропадают при обновлении страницы. Ничего не отправляется на сервер.</p>
+      <p class="note">Демо: все данные хранятся только в памяти вашего браузера и пропадают при обновлении страницы. Деньги и выплаты условные, ничего не отправляется на сервер.</p>
     </div>
   </div>
 </div>
 
 <input type="file" id="picker" multiple hidden>
+
+<div class="modal" id="mAuth"><div class="box">
+  <h3 id="auTitle">Вход</h3>
+  <div class="tabs" style="margin-bottom:8px"><button data-au="login" class="on">Войти</button><button data-au="reg">Регистрация</button></div>
+  <label class="fl" for="auMail">Эл. почта</label>
+  <input class="in-t" id="auMail" type="email" placeholder="you@example.com" autocomplete="off">
+  <label class="fl" for="auPass">Пароль</label>
+  <input class="in-t" id="auPass" type="password" placeholder="Любой пароль — это демо" autocomplete="off">
+  <div id="auRefBox" style="display:none"><label class="fl" for="auRef">Код партнёра (необязательно)</label><input class="in-t" id="auRef" placeholder="Например, TUCHKA-DEMO" autocomplete="off"></div>
+  <p class="err" id="auErr">Введите адрес почты</p>
+  <button class="btn" id="auGo" style="width:100%;margin-top:16px">Войти</button>
+  <p class="note">Демо-вход: подойдёт любая почта и любой пароль. На счёт зачислено 1 500 ₽ условных денег — чтобы можно было «купить» тариф.</p>
+  <p style="margin:10px 0 0;text-align:right"><button class="btn sm ghost" data-close>Закрыть</button></p>
+</div></div>
 
 <div class="modal" id="mShare"><div class="box">
   <h3>Ссылка на файл</h3>
@@ -239,6 +228,7 @@ label.fl{display:block;font-weight:700;font-size:14px;margin:12px 0 6px}
   <input class="in-t" id="shPass" type="text" placeholder="Например, 1234" autocomplete="off">
   <label class="fl" for="shExp">Срок действия</label>
   <select class="in-t" id="shExp"><option value="0">Без ограничения</option><option value="1">1 день</option><option value="7" selected>7 дней</option><option value="30">30 дней</option></select>
+  <div id="shLock" class="lock" style="display:none">Пароль и срок действия ссылки доступны на платных тарифах. <a href="#" id="shUp">Посмотреть тарифы</a></div>
   <div class="chk"><input type="checkbox" id="shDl" checked><label for="shDl">Разрешить скачивание</label></div>
   <button class="btn" id="shCreate" style="width:100%">Создать ссылку</button>
   <div id="shOut" style="display:none">
@@ -255,12 +245,12 @@ label.fl{display:block;font-weight:700;font-size:14px;margin:12px 0 6px}
 </div></div>
 
 <div class="modal" id="mOpen"><div class="box">
-  <h3 id="opTitle">Вам отправили файл</h3>
+  <h3>Вам отправили файл</h3>
   <p class="note" id="opMeta" style="margin-top:0"></p>
   <div id="opLock">
     <label class="fl" for="opPass">Пароль</label>
     <input class="in-t" id="opPass" type="password" autocomplete="off">
-    <p class="note" id="opErr" style="color:#c0392b;display:none">Неверный пароль</p>
+    <p class="err" id="opErr">Неверный пароль</p>
     <button class="btn" id="opGo" style="width:100%;margin-top:14px">Открыть</button>
   </div>
   <div id="opFile" style="display:none"><div class="prev" id="opBox"></div><p style="margin:14px 0 0"><a class="btn sm" id="opDl" download>Скачать файл</a></p></div>
@@ -293,18 +283,42 @@ label.fl{display:block;font-weight:700;font-size:14px;margin:12px 0 6px}
   <p style="margin:14px 0 0;text-align:right"><button class="btn sm ghost" data-close>Закрыть</button></p>
 </div></div>
 
-<footer><div class="wrap in"><span>© Тучка — демонстрационный проект</span><span>Создан в «Веб-Ателье»</span></div></footer>
+<div class="modal" id="mTop"><div class="box">
+  <h3>Пополнить кошелёк</h3>
+  <label class="fl" for="tpSum">Сумма, ₽</label>
+  <input class="in-t" id="tpSum" type="number" min="100" step="100" value="1000">
+  <div class="tabs" style="margin-top:10px"><button data-tp="500">500</button><button data-tp="1000">1 000</button><button data-tp="2000">2 000</button><button data-tp="5000">5 000</button></div>
+  <p class="err" id="tpErr">Минимальная сумма — 100 ₽</p>
+  <button class="btn" id="tpGo" style="width:100%;margin-top:6px">Оплатить через платёжную систему</button>
+  <p class="note">Демо: оплата условная, настоящая платёжная система подключается на этапе разработки.</p>
+  <p style="margin:10px 0 0;text-align:right"><button class="btn sm ghost" data-close>Закрыть</button></p>
+</div></div>
+
+<div class="modal" id="mWd"><div class="box">
+  <h3>Вывод средств</h3>
+  <p class="note" style="margin-top:0">Доступно: <b id="wdAvail"></b>. Вывод через СБП по номеру телефона, минимум 1 000 ₽.</p>
+  <label class="fl" for="wdPhone">Телефон</label>
+  <input class="in-t" id="wdPhone" type="tel" placeholder="+7 900 000-00-00" autocomplete="off">
+  <label class="fl" for="wdSum">Сумма, ₽</label>
+  <input class="in-t" id="wdSum" type="number" min="1000" step="100">
+  <p class="err" id="wdErr"></p>
+  <button class="btn" id="wdGo" style="width:100%;margin-top:16px">Вывести</button>
+  <p style="margin:10px 0 0;text-align:right"><button class="btn sm ghost" data-close>Закрыть</button></p>
+</div></div>
+
 <div class="toast" id="toast"></div>
 
 <script>
 (function(){
 'use strict';
-var LIMIT = 2*1024*1024*1024;
-var $ = function(s,r){return (r||document).querySelector(s)};
-var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var GB=1024*1024*1024;
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
-function fmt(b){if(b<1024)return b+' Б';if(b<1048576)return (b/1024).toFixed(0)+' КБ';if(b<1073741824)return (b/1048576).toFixed(1).replace('.',',')+' МБ';return (b/1073741824).toFixed(2).replace('.',',')+' ГБ'}
-function toast(t){var e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(function(){e.classList.remove('on')},2600)}
+function fmt(b){if(b<1024)return b+' Б';if(b<1048576)return (b/1024).toFixed(0)+' КБ';if(b<GB)return (b/1048576).toFixed(1).replace('.',',')+' МБ';return (b/GB).toFixed(2).replace('.',',')+' ГБ'}
+function rub(n){n=Math.round(n*100)/100;return n.toLocaleString('ru-RU',{maximumFractionDigits:2})+' ₽'}
+function dt(t){return new Date(t).toLocaleDateString('ru-RU')}
+function toast(t){var e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(function(){e.classList.remove('on')},2800)}
 function kind(n,t){n=(n||'').toLowerCase();t=t||'';
   if(/^image\//.test(t)||/\.(jpe?g|png|gif|webp|svg|avif)$/.test(n))return 'img';
   if(/^video\//.test(t)||/\.(mp4|webm|mov|m4v)$/.test(n))return 'vid';
@@ -316,106 +330,279 @@ function kind(n,t){n=(n||'').toLowerCase();t=t||'';
 function ext(n){var m=/\.([a-z0-9]+)$/i.exec(n||'');return m?m[1].slice(0,4).toUpperCase():'FILE'}
 function uid(){return Math.random().toString(36).slice(2,9)}
 
-var S={ws:[{id:'w0',name:'Личное'},{id:'w1',name:'Ремонт квартиры'},{id:'w2',name:'Клиент «Орбита»'}],files:[],links:[],reqs:[],cur:'all',view:'files'};
+/* ---------- тарифы ---------- */
+var PLANS=[
+ {id:'free',n:'Бесплатный',pm:0,py:0,gb:2,sub:'Чтобы попробовать',f:[['2 ГБ места',1],['Загрузка файлов и папок',1],['Ссылки для передачи',1],['Пароль и срок ссылки',0],['Сбор файлов от клиентов',0]]},
+ {id:'solo',n:'Solo',pm:199,py:1990,gb:50,sub:'Личные файлы и проекты',f:[['50 ГБ места*',1],['Пароль и срок ссылки',1],['Рабочие пространства',1],['Просмотр в браузере',1],['Сбор файлов от клиентов',0]]},
+ {id:'pro',n:'Pro',pm:499,py:4990,gb:500,hot:1,sub:'Для фрилансеров',f:[['500 ГБ места*',1],['Пароль и срок ссылки',1],['Страницы сбора файлов',1],['Рабочие пространства',1],['Просмотр в браузере',1]]},
+ {id:'studio',n:'Studio',pm:999,py:9990,gb:2000,sub:'Команды и активные проекты',f:[['2 ТБ места*',1],['Совместная работа',1],['Права доступа',1],['Страницы сбора файлов',1],['Всё из Pro',1]]}
+];
+function plan(id){return PLANS.filter(function(p){return p.id===id})[0]}
+
+/* ---------- состояние ---------- */
+var S={user:null,plan:'free',period:'m',wallet:0,wh:[],
+  ws:[{id:'w0',name:'Личное'},{id:'w1',name:'Ремонт квартиры'},{id:'w2',name:'Клиент «Орбита»'}],
+  files:[],links:[],reqs:[],cur:'all',
+  pt:{invited:0,bought:0,avail:0,total:0,hold:[],hist:[],tab:'main'}};
 [['Договор_подряд.pdf','w1',1.8*1048576,'application/pdf'],['Смета_октябрь.xlsx','w1',96*1024,''],['Фото_до_ремонта.jpg','w1',3.4*1048576,'image/jpeg'],
  ['Бриф_на_сайт.docx','w2',212*1024,''],['Логотип_Орбита.png','w2',640*1024,'image/png'],['Презентация.pdf','w2',5.2*1048576,'application/pdf']]
  .forEach(function(x,i){S.files.push({id:uid(),name:x[0],ws:x[1],size:Math.round(x[2]),type:x[3],blob:null,date:Date.now()-i*146880000})});
 S.reqs.push({id:uid(),name:'Материалы для сайта',ws:'w2',got:0});
-
-function wsName(id){var w=S.ws.filter(function(x){return x.id===id})[0];return w?w.name:'—'}
+function limit(){return plan(S.plan).gb*GB}
 function used(){return S.files.reduce(function(a,f){return a+f.size},0)}
+function wsName(id){var w=S.ws.filter(function(x){return x.id===id})[0];return w?w.name:'—'}
 function fileById(id){return S.files.filter(function(f){return f.id===id})[0]}
+function refCode(){return 'TUCHKA-'+(S.user?S.user.code:'DEMO')}
+function refLink(){return 'https://tuchka.demo/?ref='+refCode()}
+function paid(){return S.plan!=='free'}
+function canReq(){return S.plan==='pro'||S.plan==='studio'}
 
-function showApp(on){document.body.classList.toggle('app',!!on);window.scrollTo(0,0);if(on)render()}
-function toSite(id){showApp(false);if(id)setTimeout(function(){var t=document.getElementById(id);if(t)t.scrollIntoView()},30)}
-$('#goHome').addEventListener('click',function(e){e.preventDefault();showApp(false)});
-['#goApp1','#goApp2','#goApp3'].forEach(function(s){$(s).addEventListener('click',function(e){e.preventDefault();showApp(true)})});
-$$('.goApp').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();showApp(true)})});
-$$('[data-site]').forEach(function(a){a.addEventListener('click',function(e){if(document.body.classList.contains('app')){e.preventDefault();toSite(a.getAttribute('href').slice(1))}})});
-$$('.goTariffs').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();toSite('tarify')})});
+/* ---------- контент страниц ---------- */
+var SCEN={
+ 'send-large-files':{t:'Передача больших файлов',lead:'Отправьте архив, видео или макеты одной ссылкой. Получателю не нужен аккаунт.',b:['Загрузка файлов и папок перетаскиванием','Ссылка работает в браузере на телефоне и компьютере','Просмотр без скачивания: фото, видео, PDF','Можно ограничить срок и закрыть паролем']},
+ 'secure-file-sharing':{t:'Безопасная передача файлов',lead:'Договоры, сметы и личные документы — только тем, кому вы их показали.',b:['Пароль на каждую ссылку','Ссылку можно отозвать в один клик','Срок действия: день, неделя, месяц','Файлы не удаляются автоматически']},
+ 'file-requests':{t:'Запрос файлов',lead:'Создайте страницу, отправьте клиенту ссылку — материалы придут в нужное пространство.',b:['Клиенту не нужна регистрация','Страница с вашим описанием: что именно нужно','Файлы сразу попадают в выбранное пространство','Доступно на тарифах Pro и Studio']},
+ 'protected-links':{t:'Защищённые ссылки',lead:'Пароль и срок действия для файла или папки — когда ссылка не должна жить вечно.',b:['Пароль и срок задаются при создании','Запрет скачивания: только просмотр','Список всех ссылок в одном месте','Отзыв ссылки без удаления файла']},
+ 'workspaces':{t:'Рабочие пространства',lead:'Отдельное место под каждого клиента или проект — файлы не перемешиваются.',b:['Пространство на клиента или проект','Приглашение участников','Права доступа по ролям на тарифе Studio','Общий счётчик места по аккаунту']},
+ 'freelancers':{t:'Облако для фрилансеров',lead:'Получайте материалы от заказчиков и отдавайте готовую работу по ссылке с паролем.',b:['Страница запроса файлов вместо переписки в мессенджерах','Папка на каждого заказчика','Передача результата по защищённой ссылке','Тариф Pro — 499 ₽ в месяц']},
+ 'designers':{t:'Облако для дизайнеров',lead:'Тяжёлые макеты, видео и исходники — без потери качества, с просмотром в браузере.',b:['Большие файлы и целые папки','Просмотр изображений и PDF без скачивания','Ссылка для клиента на согласование','Структура по проектам']}
+};
+var LEGAL={
+ about:['О сервисе','«Тучка» — демонстрационный облачный сервис для файлов, клиентов и проектов. Этот сайт — прототип интерфейса: он показывает, как будет выглядеть и работать продукт.'],
+ support:['Поддержка','В полной версии здесь будет форма обращения и контакты поддержки. В демо контакты не указаны намеренно.'],
+ privacy:['Конфиденциальность','Демо-версия не передаёт ваши файлы и данные на сервер: всё хранится только в памяти вашего браузера и исчезает при обновлении страницы. Текст политики для рабочей версии готовится отдельно.'],
+ terms:['Условия использования','Это заглушка страницы. В рабочей версии здесь будут условия использования сервиса, права и обязанности сторон.'],
+ refund:['Возврат и отмена','Это заглушка страницы. В рабочей версии: подписку можно отменить в любой момент, списания прекратятся, доступ сохранится до конца оплаченного периода.'],
+ abuse:['Правила использования','Это заглушка страницы. В рабочей версии здесь будут правила допустимого использования: запрет незаконного контента, спама и распространения вредоносных файлов.']
+};
+var BLOG=[
+ {id:'partnerskaya-programma',t:'Партнёрская программа «Тучки»',d:'10% с первой оплаты приглашённого: как получить ссылку и вывести деньги.'},
+ {id:'big-files',t:'Как отправить клиенту большой файл',d:'Три способа, которые не ломают почту, и когда ссылка с паролем удобнее архива.'},
+ {id:'requests',t:'Сбор материалов без переписки',d:'Страница запроса файлов вместо десяти писем «пришлите ещё раз».'}
+];
 
+function planCard(p,showBuy){
+  var price=S.period==='m'?p.pm:p.py,per=S.period==='m'?'/ мес':'/ год';
+  var cur=S.user&&S.plan===p.id;
+  var sub=(S.period==='y'&&p.pm)?'выгода '+rub(p.pm*12-p.py)+' в год':p.sub;
+  return '<div class="plan'+(p.hot?' hot':'')+(cur?' cur':'')+'"><h3>'+p.n+(p.hot?' <span class="pill">рекомендуем</span>':'')+'</h3>'+
+   '<div class="pr">'+(price?rub(price)+' <small>'+per+'</small>':'0 ₽')+'</div><div class="sub">'+esc(sub)+'</div><ul>'+
+   p.f.map(function(x){return '<li'+(x[1]?'':' class="no"')+'>'+esc(x[0])+'</li>'}).join('')+'</ul>'+
+   (cur?'<button class="btn ghost" disabled>Ваш тариф</button>':'<button class="btn'+(p.hot?'':' ghost')+'" data-buy="'+p.id+'">'+(p.id==='free'?'Начать бесплатно':'Выбрать '+p.n)+'</button>')+'</div>'}
+function plansHtml(){
+  return '<div class="seg" role="tablist"><button data-per="m" class="'+(S.period==='m'?'on':'')+'">Месяц</button><button data-per="y" class="'+(S.period==='y'?'on':'')+'">Год · 2 месяца в подарок</button></div>'+
+  '<div class="plans">'+PLANS.map(function(p){return planCard(p)}).join('')+'</div>'+
+  '<p class="note">* Объёмы места на платных тарифах в демо условные. Оплата — через кошелёк сервиса: пополните его в кабинете.</p>'}
+
+function pageHome(){return '<div class="hero"><div><h1>Файлы клиентов и проектов — в одном облаке</h1>'+
+ '<p>Загружайте, отправляйте защищённые ссылки и собирайте материалы от клиентов без регистрации. Просмотр файлов прямо в браузере.</p>'+
+ '<div class="cta"><a class="btn" href="#/app/files" data-needauth>Попробовать демо</a><a class="btn ghost" href="#/pricing">Тарифы</a></div>'+
+ '<small>Бесплатно 2 ГБ · без привязки карты · без рекламы</small></div>'+
+ '<div class="mock" aria-hidden="true">'+
+ '<div class="row"><span class="ic pdf">PDF</span><div class="t"><b>Договор_подряд.pdf</b><span>1,8 МБ · пространство «Ремонт»</span></div><span class="pill">по паролю</span></div>'+
+ '<div class="row"><span class="ic img">ZIP</span><div class="t"><b>Макеты_лендинг.zip</b><span>248 МБ · ссылка до 30 октября</span></div><span class="pill">ссылка</span></div>'+
+ '<div class="row"><span class="ic vid">MP4</span><div class="t"><b>Видео_для_клиента.mp4</b><span>412 МБ · просмотр в браузере</span></div><span class="pill">просмотр</span></div>'+
+ '<div class="row"><span class="ic xls">XLS</span><div class="t"><b>Смета_октябрь.xlsx</b><span>96 КБ · загружено клиентом</span></div><span class="pill">сбор</span></div></div></div>'+
+ '<section><h2>Всё, что нужно для работы с файлами</h2><p class="lead">Нажмите на карточку — там подробности. Каждую возможность можно попробовать в демо-кабинете.</p><div class="grid">'+
+ [['⬆️','Передача больших файлов','send-large-files','Файлы и папки одной ссылкой, получателю аккаунт не нужен.'],
+  ['🔗','Защищённые ссылки','protected-links','Пароль и срок действия для любого файла или папки.'],
+  ['📥','Запрос файлов','file-requests','Клиент загружает материалы сам, без регистрации.'],
+  ['🗂️','Рабочие пространства','workspaces','Отдельное место под каждого клиента или проект.'],
+  ['🔒','Безопасная передача','secure-file-sharing','Файлы видят только те, кому вы дали ссылку.'],
+  ['💸','Партнёрская программа','blog:partnerskaya-programma','10% с первой оплаты приглашённого вами пользователя.']]
+ .map(function(c){var h=c[2].indexOf('blog:')===0?'#/blog/'+c[2].slice(5):'#/p/'+c[2];return '<a class="card" href="'+h+'"><div class="em">'+c[0]+'</div><h3>'+c[1]+'</h3><p>'+c[3]+'</p></a>'}).join('')+'</div></section>'+
+ '<section><h2>Как это работает</h2><p class="lead">Три шага — и файл у получателя.</p><div class="steps">'+
+ '<div class="card"><h3>Загрузите</h3><p>Перетащите файлы в окно или нажмите «Загрузить».</p></div>'+
+ '<div class="card"><h3>Настройте ссылку</h3><p>Задайте пароль и срок — или оставьте открытой.</p></div>'+
+ '<div class="card"><h3>Отправьте</h3><p>Получатель открывает ссылку и смотрит файл в браузере.</p></div></div></section>'+
+ '<section id="tarify"><h2>Тарифы</h2><p class="lead">Начните бесплатно — перейти на платный можно в любой момент.</p>'+plansHtml()+'</section>'+
+ '<section class="faq"><h2>Частые вопросы</h2>'+
+ '<details><summary>Нужен ли аккаунт получателю?</summary><p>Нет. Получатель открывает ссылку и смотрит или скачивает файл. Для страницы сбора файлов регистрация тоже не нужна.</p></details>'+
+ '<details><summary>Что будет, если закончится место?</summary><p>Старые файлы остаются доступными, новые загрузки приостанавливаются, пока вы не освободите место или не перейдёте на другой тариф. Мы ничего не удаляем автоматически.</p></details>'+
+ '<details><summary>Можно ли отменить подписку?</summary><p>Да, в любой момент. Списания прекратятся, а доступ сохранится до конца оплаченного периода.</p></details>'+
+ '<details><summary>Это рабочий сервис?</summary><p>Это демонстрационный прототип интерфейса: файлы и «деньги» существуют только в вашем браузере и пропадают при обновлении страницы. Серверная часть, хранилище и платежи — следующий этап.</p></details></section>'}
+function pagePricing(){return '<h1 class="pg">Тарифы</h1><p class="lead">Четыре тарифа: бесплатный и три платных. Переключайте период — цены пересчитаются.</p>'+plansHtml()}
+function pageScen(k){var s=SCEN[k];if(!s)return pageHome();
+ return '<div class="crumb"><a href="#/">Главная</a> / '+esc(s.t)+'</div><h1 class="pg">'+esc(s.t)+'</h1><p class="lead">'+esc(s.lead)+'</p>'+
+ '<div class="grid">'+s.b.map(function(x){return '<div class="card"><p style="color:var(--ink);font-weight:600">'+esc(x)+'</p></div>'}).join('')+'</div>'+
+ '<p style="margin-top:28px"><a class="btn" href="#/app/files" data-needauth>Попробовать бесплатно</a> <a class="btn ghost" href="#/pricing">Тарифы</a></p>'}
+function pageLegal(k){var l=LEGAL[k]||LEGAL.about;
+ return '<div class="crumb"><a href="#/">Главная</a> / '+esc(l[0])+'</div><h1 class="pg">'+esc(l[0])+'</h1><div class="prose"><p>'+esc(l[1])+'</p></div>'}
+function pageBlog(){return '<h1 class="pg">Блог</h1><p class="lead">Короткие материалы о передаче файлов и работе с клиентами.</p><div class="grid">'+
+ BLOG.map(function(b){return '<a class="card" href="#/blog/'+b.id+'"><h3 style="margin-top:0">'+esc(b.t)+'</h3><p>'+esc(b.d)+'</p></a>'}).join('')+'</div>'}
+function pageArticle(id){
+ var b=BLOG.filter(function(x){return x.id===id})[0];if(!b)return pageBlog();
+ var body;
+ if(id==='partnerskaya-programma'){
+  body='<p>Приглашайте пользователей в «Тучку» по личной ссылке и получайте вознаграждение.</p>'+
+  '<h2>Сколько платят</h2><p><b>10%</b> с первой подтверждённой покупки платного тарифа, которую совершил приглашённый пользователь. Оплата засчитывается, если она прошла через платёжную систему или внутренний кошелёк.</p>'+
+  '<h2>Как получить ссылку</h2><ul><li>В кабинете откройте раздел «Партнёрство», вкладка «Основное».</li><li>Там же — уникальный партнёрский код с кнопкой копирования.</li><li>Пользователь должен перейти по ссылке, зарегистрироваться и оплатить первый платный тариф.</li></ul>'+
+  '<h2>Выплаты</h2><ul><li>Начисление появляется после подтверждения покупки и на 14 дней уходит «на удержание».</li><li>После удержания сумма становится доступной: её можно перевести в кошелёк или вывести.</li><li>Вывод — через СБП по номеру телефона, минимум 1 000 ₽.</li></ul>'+
+  '<h2>Ограничения</h2><ul><li>Вознаграждение начисляется только за первую подтверждённую покупку платного тарифа.</li><li>Регистрация должна произойти после перехода по партнёрской ссылке.</li></ul>'+
+  '<p><a class="btn" href="#/app/partner" data-needauth>Открыть партнёрский кабинет</a></p>';
+ } else if(id==='big-files'){
+  body='<p>Почта режет вложения, мессенджеры сжимают качество. Надёжнее — ссылка на файл в облаке.</p><ul><li>Загрузите файл или папку и создайте ссылку.</li><li>Если файл конфиденциальный, добавьте пароль и срок действия.</li><li>Получатель смотрит файл в браузере и при желании скачивает.</li></ul>';
+ } else {
+  body='<p>Вместо цепочки писем «пришлите ещё раз» создайте страницу запроса файлов и отправьте клиенту ссылку.</p><ul><li>Клиенту не нужна регистрация.</li><li>Он видит, что именно нужно загрузить.</li><li>Файлы сразу попадают в выбранное пространство.</li></ul>';
+ }
+ return '<div class="crumb"><a href="#/">Главная</a> / <a href="#/blog">Блог</a> / '+esc(b.t)+'</div><h1 class="pg">'+esc(b.t)+'</h1><div class="prose">'+body+'</div>'}
+
+/* ---------- маршрутизация ---------- */
+var navOn=null;
+function parts(){var h=(location.hash||'#/').replace(/^#\/?/,'');return h.split('/').filter(Boolean)}
+function route(){
+  var p=parts(),isApp=p[0]==='app';
+  if(isApp&&!S.user){go('#/');openAuth('login');return}
+  document.body.classList.toggle('app',isApp);
+  window.scrollTo(0,0);
+  renderNav();
+  if(isApp){
+    var v=p[1]||'files';
+    if(v==='files'&&p[2]){S.cur=p[2]}else if(v==='files'){S.cur='all'}
+    S.view=v;renderApp();return}
+  var h;
+  if(!p.length)h=pageHome();
+  else if(p[0]==='pricing')h=pagePricing();
+  else if(p[0]==='blog')h=p[1]?pageArticle(p[1]):pageBlog();
+  else if(p[0]==='p')h=pageScen(p[1]);
+  else if(p[0]==='l')h=pageLegal(p[1]);
+  else h=pageHome();
+  $('#page').innerHTML=h;
+  if(!p.length&&navOn){var t=document.getElementById(navOn);navOn=null;if(t)t.scrollIntoView()}
+}
+function go(h){if(location.hash===h)route();else location.hash=h}
+window.addEventListener('hashchange',route);
+function renderNav(){
+  var u=S.user,isApp=document.body.classList.contains('app');
+  $('#nav').innerHTML='<a class="h" href="#/p/send-large-files">Возможности</a><a class="h" href="#/pricing">Тарифы</a><a class="h" href="#/blog">Блог</a>'+
+  (u?'<span class="chip hide-s">Кошелёк: '+rub(S.wallet)+'</span><a class="btn sm'+(isApp?' ghost':'')+'" href="#/app/files">Кабинет</a><a class="btn sm ghost" href="#" data-act="logout">Выйти</a>'
+    :'<a class="btn sm ghost" href="#" data-act="login">Войти</a><a class="btn sm" href="#" data-act="reg">Начать бесплатно</a>')}
+
+/* ---------- модалки ---------- */
 function open(id){$(id).classList.add('on')}
 function closeAll(){$$('.modal.on').forEach(function(m){m.classList.remove('on')});$('#pvBox').innerHTML='';$('#opBox').innerHTML=''}
 $$('[data-close]').forEach(function(b){b.addEventListener('click',closeAll)});
 $$('.modal').forEach(function(m){m.addEventListener('mousedown',function(e){if(e.target===m)closeAll()})});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAll()});
 
-function render(){
-  $('#cFiles').textContent=S.files.length;$('#cLinks').textContent=S.links.length;$('#cReq').textContent=S.reqs.length;
-  var u=used();$('#qText').textContent=fmt(u)+' из 2 ГБ';$('#qBar').style.width=Math.max(1,Math.min(100,u/LIMIT*100))+'%';
-  $('#wsList').innerHTML=S.ws.map(function(w){var n=S.files.filter(function(f){return f.ws===w.id}).length;
-    return '<button class="nv'+(S.cur===w.id&&S.view==='files'?' on':'')+'" data-ws="'+w.id+'">🗂️ '+esc(w.name)+'<span class="cnt">'+n+'</span></button>'}).join('');
-  $$('.side .nv[data-v]').forEach(function(b){b.classList.toggle('on',b.dataset.v===S.view&&S.cur==='all')});
-  $('#mobNav').innerHTML='<button data-v="files" class="'+(S.view==='files'&&S.cur==='all'?'on':'')+'">Все файлы</button><button data-v="links" class="'+(S.view==='links'?'on':'')+'">Ссылки</button><button data-v="requests" class="'+(S.view==='requests'?'on':'')+'">Сбор файлов</button>'+
-    S.ws.map(function(w){return '<button data-ws="'+w.id+'" class="'+(S.cur===w.id&&S.view==='files'?'on':'')+'">'+esc(w.name)+'</button>'}).join('')+'<button class="goTariffs2">Тарифы</button>';
-  var g=$('.goTariffs2');if(g)g.addEventListener('click',function(){toSite('tarify')});
-  if(S.view==='files')viewFiles();else if(S.view==='links')viewLinks();else viewReqs();
-}
+/* ---------- вход ---------- */
+var auMode='login';
+function openAuth(mode){auMode=mode;
+  $('#auTitle').textContent=mode==='reg'?'Регистрация':'Вход';
+  $$('[data-au]').forEach(function(b){b.classList.toggle('on',b.dataset.au===mode)});
+  $('#auGo').textContent=mode==='reg'?'Создать аккаунт':'Войти';
+  $('#auRefBox').style.display=mode==='reg'?'':'none';
+  $('#auErr').style.display='none';open('#mAuth')}
+$$('[data-au]').forEach(function(b){b.addEventListener('click',function(){openAuth(b.dataset.au)})});
+$('#auGo').addEventListener('click',function(){
+  var m=$('#auMail').value.trim();
+  if(!/^\S+@\S+\.\S+$/.test(m)){$('#auErr').style.display='block';return}
+  S.user={email:m,code:(m.split('@')[0].replace(/[^a-z0-9]/gi,'').toUpperCase()||'USER').slice(0,8)};
+  S.wallet=1500;S.wh.unshift({t:Date.now(),k:'Бонус при регистрации (демо)',s:1500});
+  closeAll();toast('Добро пожаловать! На кошельке 1 500 ₽ условных денег');go('#/app/files')});
+
+/* ---------- приложение ---------- */
+function side(){
+  var v=S.view;
+  return '<button class="nv'+(v==='files'&&S.cur==='all'?' on':'')+'" data-go="#/app/files">📁 Все файлы <span class="cnt">'+S.files.length+'</span></button>'+
+  '<button class="nv'+(v==='links'?' on':'')+'" data-go="#/app/links">🔗 Мои ссылки <span class="cnt">'+S.links.length+'</span></button>'+
+  '<button class="nv'+(v==='requests'?' on':'')+'" data-go="#/app/requests">📥 Сбор файлов <span class="cnt">'+S.reqs.length+'</span></button>'+
+  '<h4>Пространства</h4>'+
+  S.ws.map(function(w){var n=S.files.filter(function(f){return f.ws===w.id}).length;return '<button class="nv'+(v==='files'&&S.cur===w.id?' on':'')+'" data-go="#/app/files/'+w.id+'">🗂️ '+esc(w.name)+'<span class="cnt">'+n+'</span></button>'}).join('')+
+  '<button class="nv" data-act="newws">＋ Новое пространство</button>'+
+  '<h4>Аккаунт</h4>'+
+  '<button class="nv'+(v==='partner'?' on':'')+'" data-go="#/app/partner">💸 Партнёрство</button>'+
+  '<button class="nv'+(v==='wallet'?' on':'')+'" data-go="#/app/wallet">👛 Кошелёк <span class="cnt">'+rub(S.wallet)+'</span></button>'+
+  '<div class="quota"><div>'+fmt(used())+' из '+plan(S.plan).gb+' ГБ · '+plan(S.plan).n+'</div><div class="bar"><i style="width:'+Math.max(1,Math.min(100,used()/limit()*100))+'%"></i></div><a href="#/app/wallet">Сменить тариф</a></div>'}
+function mobNav(){
+  var v=S.view;
+  return '<button data-go="#/app/files" class="'+(v==='files'&&S.cur==='all'?'on':'')+'">Все файлы</button>'+
+  '<button data-go="#/app/links" class="'+(v==='links'?'on':'')+'">Ссылки</button>'+
+  '<button data-go="#/app/requests" class="'+(v==='requests'?'on':'')+'">Сбор файлов</button>'+
+  '<button data-go="#/app/partner" class="'+(v==='partner'?'on':'')+'">Партнёрство</button>'+
+  '<button data-go="#/app/wallet" class="'+(v==='wallet'?'on':'')+'">Кошелёк</button>'+
+  S.ws.map(function(w){return '<button data-go="#/app/files/'+w.id+'" class="'+(v==='files'&&S.cur===w.id?'on':'')+'">'+esc(w.name)+'</button>'}).join('')}
+function renderApp(){
+  $('#side').innerHTML=side();$('#mobNav').innerHTML=mobNav();
+  $('#vBtns').innerHTML='';
+  if(S.view==='links')viewLinks();else if(S.view==='requests')viewReqs();else if(S.view==='partner')viewPartner();else if(S.view==='wallet')viewWallet();else viewFiles();
+  renderNav()}
 function row(f,extra){
-  return '<div class="f" data-id="'+f.id+'"><span class="ic '+kind(f.name,f.type)+'">'+esc(ext(f.name))+'</span><div class="t"><b data-act="open">'+esc(f.name)+'</b><span>'+fmt(f.size)+' · '+esc(wsName(f.ws))+' · '+new Date(f.date).toLocaleDateString('ru-RU')+'</span></div><div class="act">'+extra+'</div></div>'}
+  return '<div class="f" data-id="'+f.id+'"><span class="ic '+kind(f.name,f.type)+'">'+esc(ext(f.name))+'</span><div class="t"><b data-act="open">'+esc(f.name)+'</b><span>'+fmt(f.size)+' · '+esc(wsName(f.ws))+' · '+dt(f.date)+'</span></div><div class="act">'+extra+'</div></div>'}
 function viewFiles(){
   $('#vTitle').textContent=S.cur==='all'?'Все файлы':wsName(S.cur);
-  $('#vBtns').innerHTML='<button class="btn" id="bUp">⬆ Загрузить</button>';
+  $('#vBtns').innerHTML='<button class="btn" data-act="pick">⬆ Загрузить</button>';
   var fl=S.files.filter(function(f){return S.cur==='all'||f.ws===S.cur}).sort(function(a,b){return b.date-a.date});
   $('#view').innerHTML='<div class="drop" id="drop"><b>Перетащите файлы сюда</b><br>или нажмите «Загрузить»</div>'+
-    '<div class="files">'+(fl.length?fl.map(function(f){return row(f,'<button class="btn sm ghost" data-act="open">Просмотр</button><button class="btn sm" data-act="share">Ссылка</button><button class="btn sm danger" data-act="del">Удалить</button>')}).join(''):'<div class="empty">Здесь пока пусто. Загрузите первый файл.</div>')+'</div>';
-  $('#bUp').addEventListener('click',function(){$('#picker').click()});
+   '<div class="files">'+(fl.length?fl.map(function(f){return row(f,'<button class="btn sm ghost" data-act="open">Просмотр</button><button class="btn sm" data-act="share">Ссылка</button><button class="btn sm danger" data-act="del">Удалить</button>')}).join(''):'<div class="empty">Здесь пока пусто. Загрузите первый файл.</div>')+'</div>';
   var d=$('#drop');
   ['dragenter','dragover'].forEach(function(ev){d.addEventListener(ev,function(e){e.preventDefault();d.classList.add('over')})});
   ['dragleave','drop'].forEach(function(ev){d.addEventListener(ev,function(e){e.preventDefault();d.classList.remove('over')})});
   d.addEventListener('drop',function(e){addFiles(e.dataTransfer.files,S.cur==='all'?'w0':S.cur)});
 }
 function viewLinks(){
-  $('#vTitle').textContent='Мои ссылки';$('#vBtns').innerHTML='';
+  $('#vTitle').textContent='Мои ссылки';
   $('#view').innerHTML='<div class="files">'+(S.links.length?S.links.map(function(l){var f=fileById(l.file);if(!f)return '';
-    var exp=l.exp?'до '+new Date(l.exp).toLocaleDateString('ru-RU'):'без срока';
-    return '<div class="f" data-lid="'+l.id+'"><span class="ic '+kind(f.name,f.type)+'">'+esc(ext(f.name))+'</span><div class="t"><b>'+esc(f.name)+'</b><span>tuchka.demo/s/'+l.id+' · '+exp+' · '+(l.pass?'🔒 пароль':'без пароля')+'</span></div><div class="act"><button class="btn sm" data-act="visit">Открыть как получатель</button><button class="btn sm danger" data-act="unlink">Отозвать</button></div></div>'}).join(''):'<div class="empty">Ссылок пока нет. Откройте «Все файлы» и нажмите «Ссылка» у нужного файла.</div>')+'</div>';
+   return '<div class="f" data-lid="'+l.id+'"><span class="ic '+kind(f.name,f.type)+'">'+esc(ext(f.name))+'</span><div class="t"><b>'+esc(f.name)+'</b><span>tuchka.demo/s/'+l.id+' · '+(l.exp?'до '+dt(l.exp):'без срока')+' · '+(l.pass?'🔒 пароль':'без пароля')+'</span></div><div class="act"><button class="btn sm" data-act="visit">Открыть как получатель</button><button class="btn sm danger" data-act="unlink">Отозвать</button></div></div>'}).join(''):'<div class="empty">Ссылок пока нет. Откройте «Все файлы» и нажмите «Ссылка» у нужного файла.</div>')+'</div>';
 }
 function viewReqs(){
-  $('#vTitle').textContent='Сбор файлов';$('#vBtns').innerHTML='<button class="btn" id="bReq">＋ Новая страница сбора</button>';
+  $('#vTitle').textContent='Сбор файлов';
+  if(!canReq()){
+    $('#view').innerHTML='<div class="box2"><h3>Страницы сбора файлов — на тарифах Pro и Studio</h3><p class="note" style="margin-top:0">Клиент загружает материалы по вашей ссылке без регистрации. Сейчас у вас тариф «'+plan(S.plan).n+'».</p><p><a class="btn" href="#/app/wallet">Выбрать тариф</a></p></div>';return}
+  $('#vBtns').innerHTML='<button class="btn" data-act="newreq">＋ Новая страница сбора</button>';
   $('#view').innerHTML='<div class="files">'+(S.reqs.length?S.reqs.map(function(r){
-    return '<div class="f" data-rid="'+r.id+'"><span class="ic doc">📥</span><div class="t"><b>'+esc(r.name)+'</b><span>В пространство «'+esc(wsName(r.ws))+'» · получено файлов: '+r.got+'</span></div><div class="act"><button class="btn sm" data-act="reqopen">Открыть как клиент</button><button class="btn sm danger" data-act="reqdel">Удалить</button></div></div>'}).join(''):'<div class="empty">Создайте страницу — клиент загрузит файлы по ссылке без регистрации.</div>')+'</div>';
-  $('#bReq').addEventListener('click',function(){
-    $('#rqWs').innerHTML=S.ws.map(function(w){return '<option value="'+w.id+'">'+esc(w.name)+'</option>'}).join('');$('#rqName').value='';open('#mReq')});
+   return '<div class="f" data-rid="'+r.id+'"><span class="ic doc">📥</span><div class="t"><b>'+esc(r.name)+'</b><span>В пространство «'+esc(wsName(r.ws))+'» · получено файлов: '+r.got+'</span></div><div class="act"><button class="btn sm" data-act="reqopen">Открыть как клиент</button><button class="btn sm danger" data-act="reqdel">Удалить</button></div></div>'}).join(''):'<div class="empty">Создайте страницу — клиент загрузит файлы по ссылке без регистрации.</div>')+'</div>';
+}
+function viewWallet(){
+  $('#vTitle').textContent='Кошелёк и тариф';
+  $('#vBtns').innerHTML='<button class="btn" data-act="topup">Пополнить</button>';
+  $('#view').innerHTML='<div class="kpis"><div class="kpi"><span>На кошельке</span><b>'+rub(S.wallet)+'</b></div><div class="kpi"><span>Тариф</span><b>'+plan(S.plan).n+'</b></div><div class="kpi"><span>Место</span><b>'+fmt(used())+' / '+plan(S.plan).gb+' ГБ</b></div></div>'+
+   '<div class="box2"><h3>Тарифы</h3>'+plansHtml()+'</div>'+
+   '<div class="box2"><h3>История операций</h3>'+(S.wh.length?'<div class="files">'+S.wh.map(function(x){return '<div class="f"><div class="t"><b style="cursor:default">'+esc(x.k)+'</b><span>'+dt(x.t)+'</span></div><span class="sum" style="color:'+(x.s<0?'#c0392b':'var(--ok)')+'">'+(x.s>0?'+':'')+rub(x.s)+'</span></div>'}).join('')+'</div>':'<div class="empty">Операций пока нет</div>')+'</div>';
 }
 
-function go(v,ws){S.view=v;S.cur=ws||'all';render()}
-document.addEventListener('click',function(e){
-  var b=e.target.closest('[data-v],[data-ws]');
-  if(b&&(b.closest('.side')||b.closest('#mobNav'))){if(b.dataset.ws)go('files',b.dataset.ws);else go(b.dataset.v,'all')}
-});
-$('#newWs').addEventListener('click',function(){$('#wsName').value='';open('#mWs')});
-$('#wsCreate').addEventListener('click',function(){var n=$('#wsName').value.trim();if(!n){toast('Введите название');return}
-  var id='w'+uid();S.ws.push({id:id,name:n});closeAll();go('files',id);toast('Пространство создано')});
+/* ---------- партнёрка ---------- */
+function settle(force){var now=Date.now(),moved=0;
+  S.pt.hold=S.pt.hold.filter(function(h){
+    if(force||h.rel<=now){S.pt.avail+=h.sum;moved+=h.sum;
+      S.pt.hist.forEach(function(x){if(x.id===h.id)x.st='Доступно'});return false}
+    return true});
+  return moved}
+function holdSum(){return S.pt.hold.reduce(function(a,h){return a+h.sum},0)}
+function viewPartner(){
+  settle(false);
+  $('#vTitle').textContent='Партнёрство';
+  var t=S.pt.tab;
+  var tabs='<div class="tabs"><button data-pt="main" class="'+(t==='main'?'on':'')+'">Основное</button><button data-pt="hist" class="'+(t==='hist'?'on':'')+'">История</button><button data-pt="how" class="'+(t==='how'?'on':'')+'">Как это работает</button></div>';
+  var h;
+  if(t==='main'){
+    h='<div class="kpis"><div class="kpi"><span>Доступно к выводу</span><b>'+rub(S.pt.avail)+'</b></div><div class="kpi"><span>На удержании (14 дней)</span><b>'+rub(holdSum())+'</b></div><div class="kpi"><span>Заработано всего</span><b>'+rub(S.pt.total)+'</b></div></div>'+
+     '<div class="box2"><h3>Ваша партнёрская ссылка</h3><div class="reflink"><input class="in-t" id="refLink" readonly value="'+esc(refLink())+'"><button class="btn sm" data-act="copyref" data-v="link">Копировать</button></div>'+
+     '<h3 style="margin-top:14px">Партнёрский код</h3><div class="reflink"><input class="in-t" id="refCode" readonly value="'+esc(refCode())+'"><button class="btn sm" data-act="copyref" data-v="code">Копировать</button></div></div>'+
+     '<div class="kpis" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="kpi"><span>Приглашено пользователей</span><b>'+S.pt.invited+'</b></div><div class="kpi"><span>Совершили первую покупку</span><b>'+S.pt.bought+'</b></div></div>'+
+     '<p style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="withdraw">Вывести средства</button><button class="btn ghost" data-act="towallet">Перевести в кошелёк</button></p>'+
+     '<div class="sim"><h3>🧪 Демонстрация для заказчика</h3><p class="note" style="margin:0">В рабочей версии это происходит само. Здесь — кнопки, чтобы быстро увидеть цепочку.</p><div class="row2">'+
+     '<button class="btn sm ghost" data-act="siminv">Приглашённый зарегистрировался</button>'+
+     '<select class="in-t" id="simPlan"><option value="studio:y">Studio, год — 9 990 ₽</option><option value="pro:y">Pro, год — 4 990 ₽</option><option value="pro:m">Pro, месяц — 499 ₽</option><option value="solo:m">Solo, месяц — 199 ₽</option></select>'+
+     '<button class="btn sm" data-act="simbuy">Приглашённый купил тариф</button>'+
+     '<button class="btn sm ghost" data-act="simskip">Прошло 14 дней</button></div></div>';
+  } else if(t==='hist'){
+    h='<div class="files">'+(S.pt.hist.length?S.pt.hist.map(function(x){return '<div class="f"><div class="t"><b style="cursor:default">'+esc(x.k)+'</b><span>'+dt(x.t)+' · '+esc(x.d)+'</span></div><span class="pill '+(x.st==='Доступно'||x.st==='Выплачено'?'ok':'wait')+'">'+esc(x.st)+'</span><span class="sum">'+(x.s>0?'+':'')+rub(x.s)+'</span></div>'}).join(''):'<div class="empty">Начислений и выводов пока нет. Попробуйте кнопки демонстрации на вкладке «Основное».</div>')+'</div>';
+  } else {
+    h='<div class="box2 prose"><h3>Как это работает</h3><ul><li><b>10%</b> с первой подтверждённой покупки платного тарифа приглашённым пользователем.</li><li>Пользователь переходит по вашей ссылке, регистрируется и оплачивает тариф.</li><li>Начисление 14 дней «на удержании», затем становится доступным.</li><li>Доступные средства можно перевести в кошелёк или вывести через СБП по номеру телефона.</li><li>Минимальная сумма вывода — 1 000 ₽.</li></ul></div>';
+  }
+  $('#view').innerHTML=tabs+h;
+}
 
+/* ---------- файлы ---------- */
 function addFiles(list,ws){
-  var arr=Array.prototype.slice.call(list||[]);var n=0;
+  var arr=Array.prototype.slice.call(list||[]),n=0;
   arr.forEach(function(f){
-    if(used()+f.size>LIMIT){toast('Не хватает места: лимит 2 ГБ. Перейдите на тариф Pro');return}
+    if(used()+f.size>limit()){toast('Не хватает места: лимит тарифа '+plan(S.plan).gb+' ГБ. Смените тариф');return}
     S.files.push({id:uid(),name:f.name,ws:ws,size:f.size,type:f.type,blob:f,date:Date.now()});n++});
-  if(n){toast('Загружено файлов: '+n);render()}
+  if(n){toast('Загружено файлов: '+n);if(document.body.classList.contains('app'))renderApp()}
   return n}
 $('#picker').addEventListener('change',function(e){addFiles(e.target.files,S.cur==='all'?'w0':S.cur);e.target.value=''});
-
-var shFile=null;
-document.addEventListener('click',function(e){
-  var a=e.target.closest('[data-act]');if(!a)return;
-  var rowEl=a.closest('.f');if(!rowEl)return;
-  var act=a.dataset.act,id=rowEl.dataset.id,lid=rowEl.dataset.lid,rid=rowEl.dataset.rid;
-  if(act==='open'){preview(fileById(id))}
-  else if(act==='share'){shFile=id;$('#shName').textContent=fileById(id).name;$('#shPass').value='';$('#shOut').style.display='none';$('#shCreate').style.display='';open('#mShare')}
-  else if(act==='del'){S.files=S.files.filter(function(f){return f.id!==id});S.links=S.links.filter(function(l){return l.file!==id});render();toast('Файл удалён')}
-  else if(act==='unlink'){S.links=S.links.filter(function(l){return l.id!==lid});render();toast('Ссылка отозвана')}
-  else if(act==='visit'){openShared(S.links.filter(function(l){return l.id===lid})[0])}
-  else if(act==='reqopen'){openReq(S.reqs.filter(function(r){return r.id===rid})[0])}
-  else if(act==='reqdel'){S.reqs=S.reqs.filter(function(r){return r.id!==rid});render()}
-});
-$('#shCreate').addEventListener('click',function(){
-  var days=+$('#shExp').value;
-  var l={id:uid()+uid().slice(0,3),file:shFile,pass:$('#shPass').value.trim(),exp:days?Date.now()+days*86400000:0,dl:$('#shDl').checked};
-  S.links.push(l);$('#shUrl').value='https://tuchka.demo/s/'+l.id;$('#shOut').style.display='block';$('#shCreate').style.display='none';render();toast('Ссылка создана')});
-$('#shCopy').addEventListener('click',function(){var i=$('#shUrl');i.select();try{document.execCommand('copy')}catch(_){}toast('Скопировано')});
-
 function mediaInto(box,f,dlA,allowDl){
   var k=kind(f.name,f.type);box.innerHTML='';dlA.style.display='none';
   var url=null;if(f.blob){url=URL.createObjectURL(f.blob);dlA.href=url;dlA.download=f.name;if(allowDl!==false)dlA.style.display=''}
@@ -427,33 +614,103 @@ function mediaInto(box,f,dlA,allowDl){
   else{box.innerHTML='<div class="nop"><div style="font-size:42px">📎</div><p>Предпросмотр этого типа — в полной версии.<br>Файл можно скачать.</p></div>'}
 }
 function preview(f){if(!f)return;$('#pvName').textContent=f.name;mediaInto($('#pvBox'),f,$('#pvDl'));open('#mPrev')}
-
-var openLnk=null;
+var openLnk=null,shFile=null,curReq=null;
 function openShared(l){if(!l)return;var f=fileById(l.file);if(!f)return;openLnk=l;
-  $('#opMeta').textContent=f.name+' · '+fmt(f.size)+(l.exp?' · действует до '+new Date(l.exp).toLocaleDateString('ru-RU'):'');
+  $('#opMeta').textContent=f.name+' · '+fmt(f.size)+(l.exp?' · действует до '+dt(l.exp):'');
   $('#opPass').value='';$('#opErr').style.display='none';
   if(l.pass){$('#opLock').style.display='';$('#opFile').style.display='none'}
   else{$('#opLock').style.display='none';$('#opFile').style.display='';mediaInto($('#opBox'),f,$('#opDl'),l.dl)}
   open('#mOpen')}
 $('#opGo').addEventListener('click',function(){
-  if($('#opPass').value===openLnk.pass){var f=fileById(openLnk.file);
-    $('#opLock').style.display='none';$('#opFile').style.display='';mediaInto($('#opBox'),f,$('#opDl'),openLnk.dl)}
+  if($('#opPass').value===openLnk.pass){$('#opLock').style.display='none';$('#opFile').style.display='';mediaInto($('#opBox'),fileById(openLnk.file),$('#opDl'),openLnk.dl)}
   else $('#opErr').style.display='block'});
 $('#opPass').addEventListener('keydown',function(e){if(e.key==='Enter')$('#opGo').click()});
 
+$('#shCreate').addEventListener('click',function(){
+  var ok=paid(),days=ok?+$('#shExp').value:0;
+  var l={id:uid()+uid().slice(0,3),file:shFile,pass:ok?$('#shPass').value.trim():'',exp:days?Date.now()+days*86400000:0,dl:$('#shDl').checked};
+  S.links.push(l);$('#shUrl').value='https://tuchka.demo/s/'+l.id;$('#shOut').style.display='block';$('#shCreate').style.display='none';renderApp();toast('Ссылка создана')});
+$('#shCopy').addEventListener('click',function(){var i=$('#shUrl');i.select();try{document.execCommand('copy')}catch(_){}toast('Скопировано')});
+$('#shUp').addEventListener('click',function(e){e.preventDefault();closeAll();go('#/app/wallet')});
 $('#rqCreate').addEventListener('click',function(){var n=$('#rqName').value.trim();if(!n){toast('Опишите, что нужно получить');return}
-  S.reqs.push({id:uid(),name:n,ws:$('#rqWs').value,got:0});closeAll();render();toast('Страница сбора создана')});
-var curReq=null;
+  S.reqs.push({id:uid(),name:n,ws:$('#rqWs').value,got:0});closeAll();renderApp();toast('Страница сбора создана')});
 function openReq(r){if(!r)return;curReq=r;$('#sdTitle').textContent=r.name;$('#sdList').innerHTML='';open('#mSend')}
-$('#sdPick').addEventListener('click',function(e){e.preventDefault();var i=document.createElement('input');i.type='file';i.multiple=true;
-  i.addEventListener('change',function(){recv(i.files)});i.click()});
+$('#sdPick').addEventListener('click',function(e){e.preventDefault();var i=document.createElement('input');i.type='file';i.multiple=true;i.addEventListener('change',function(){recv(i.files)});i.click()});
 var sd=$('#sdDrop');
 ['dragenter','dragover'].forEach(function(ev){sd.addEventListener(ev,function(e){e.preventDefault();sd.classList.add('over')})});
 ['dragleave','drop'].forEach(function(ev){sd.addEventListener(ev,function(e){e.preventDefault();sd.classList.remove('over')})});
 sd.addEventListener('drop',function(e){recv(e.dataTransfer.files)});
 function recv(list){var n=addFiles(list,curReq.ws);if(n){curReq.got+=n;$('#sdList').textContent='✅ Отправлено файлов: '+n+'. Они уже в пространстве «'+wsName(curReq.ws)+'».'}}
+$('#wsCreate').addEventListener('click',function(){var n=$('#wsName').value.trim();if(!n){toast('Введите название');return}
+  var id='w'+uid();S.ws.push({id:id,name:n});closeAll();go('#/app/files/'+id);toast('Пространство создано')});
+
+/* ---------- деньги ---------- */
+function buy(id){
+  if(!S.user){openAuth('reg');return}
+  var p=plan(id);if(id==='free'){go('#/app/files');return}
+  var price=S.period==='m'?p.pm:p.py;
+  if(S.wallet<price){toast('Не хватает '+rub(price-S.wallet)+'. Пополните кошелёк');$('#tpSum').value=Math.max(100,Math.ceil((price-S.wallet)/100)*100);open('#mTop');return}
+  S.wallet-=price;S.plan=id;S.wh.unshift({t:Date.now(),k:'Тариф «'+p.n+'», '+(S.period==='m'?'месяц':'год'),s:-price});
+  toast('Тариф «'+p.n+'» подключён');
+  if(document.body.classList.contains('app'))renderApp();else go('#/app/wallet')}
+$('#tpGo').addEventListener('click',function(){var s=+$('#tpSum').value;
+  if(!(s>=100)){$('#tpErr').style.display='block';return}
+  $('#tpErr').style.display='none';S.wallet+=s;S.wh.unshift({t:Date.now(),k:'Пополнение кошелька',s:s});closeAll();toast('Кошелёк пополнен на '+rub(s));
+  if(document.body.classList.contains('app'))renderApp();else renderNav()});
+$$('[data-tp]').forEach(function(b){b.addEventListener('click',function(){$('#tpSum').value=b.dataset.tp})});
+$('#wdGo').addEventListener('click',function(){
+  var e=$('#wdErr'),s=+$('#wdSum').value,ph=$('#wdPhone').value.replace(/\D/g,'');
+  var m='';
+  if(!(ph.length===11&&/^[78]/.test(ph)))m='Введите телефон в формате +7 900 000-00-00';
+  else if(!(s>=1000))m='Минимальная сумма вывода — 1 000 ₽';
+  else if(s>S.pt.avail)m='Столько нет в доступных средствах';
+  if(m){e.textContent=m;e.style.display='block';return}
+  e.style.display='none';S.pt.avail-=s;
+  S.pt.hist.unshift({id:uid(),t:Date.now(),k:'Вывод через СБП',d:'на +7 '+ph.slice(1,4)+' ***-**-'+ph.slice(-2),s:-s,st:'Выплачено'});
+  closeAll();renderApp();toast('Заявка на вывод создана: '+rub(s))});
+
+/* ---------- клики ---------- */
+document.addEventListener('click',function(e){
+  var t=e.target;
+  var g=t.closest('[data-go]');if(g){go(g.dataset.go);return}
+  var by=t.closest('[data-buy]');if(by){buy(by.dataset.buy);return}
+  var pr=t.closest('[data-per]');if(pr){S.period=pr.dataset.per;route();return}
+  var pt=t.closest('[data-pt]');if(pt){S.pt.tab=pt.dataset.pt;viewPartner();return}
+  var na=t.closest('[data-needauth]');if(na){e.preventDefault();if(S.user)go('#/app/files');else openAuth('reg');return}
+  var a=t.closest('[data-act]');if(!a)return;
+  var act=a.dataset.act;
+  if(a.tagName==='A')e.preventDefault();
+  var rowEl=a.closest('.f'),id=rowEl&&rowEl.dataset.id,lid=rowEl&&rowEl.dataset.lid,rid=rowEl&&rowEl.dataset.rid;
+  if(act==='login'||act==='reg')openAuth(act);
+  else if(act==='logout'){S.user=null;S.plan='free';S.wallet=0;S.wh=[];S.pt={invited:0,bought:0,avail:0,total:0,hold:[],hist:[],tab:'main'};go('#/');toast('Вы вышли')}
+  else if(act==='pick')$('#picker').click();
+  else if(act==='newws'){$('#wsName').value='';open('#mWs')}
+  else if(act==='newreq'){$('#rqWs').innerHTML=S.ws.map(function(w){return '<option value="'+w.id+'">'+esc(w.name)+'</option>'}).join('');$('#rqName').value='';open('#mReq')}
+  else if(act==='topup'){$('#tpSum').value=1000;open('#mTop')}
+  else if(act==='open')preview(fileById(id));
+  else if(act==='share'){shFile=id;$('#shName').textContent=fileById(id).name;$('#shPass').value='';
+    var ok=paid();$('#shPass').disabled=!ok;$('#shExp').disabled=!ok;$('#shLock').style.display=ok?'none':'';
+    $('#shOut').style.display='none';$('#shCreate').style.display='';open('#mShare')}
+  else if(act==='del'){S.files=S.files.filter(function(f){return f.id!==id});S.links=S.links.filter(function(l){return l.file!==id});renderApp();toast('Файл удалён')}
+  else if(act==='unlink'){S.links=S.links.filter(function(l){return l.id!==lid});renderApp();toast('Ссылка отозвана')}
+  else if(act==='visit')openShared(S.links.filter(function(l){return l.id===lid})[0]);
+  else if(act==='reqopen')openReq(S.reqs.filter(function(r){return r.id===rid})[0]);
+  else if(act==='reqdel'){S.reqs=S.reqs.filter(function(r){return r.id!==rid});renderApp()}
+  else if(act==='copyref'){var i=$(a.dataset.v==='code'?'#refCode':'#refLink');i.select();try{document.execCommand('copy')}catch(_){}toast('Скопировано')}
+  else if(act==='withdraw'){settle(false);$('#wdAvail').textContent=rub(S.pt.avail);$('#wdSum').value='';$('#wdErr').style.display='none';open('#mWd')}
+  else if(act==='towallet'){settle(false);if(S.pt.avail<=0){toast('Нет доступных средств');return}
+    var s=S.pt.avail;S.pt.avail=0;S.wallet+=s;S.pt.hist.unshift({id:uid(),t:Date.now(),k:'Перевод в кошелёк',d:'внутри сервиса',s:-s,st:'Выплачено'});S.wh.unshift({t:Date.now(),k:'Партнёрские средства',s:s});renderApp();toast('Переведено в кошелёк: '+rub(s))}
+  else if(act==='siminv'){S.pt.invited++;viewPartner();toast('Приглашённый зарегистрировался по вашей ссылке')}
+  else if(act==='simbuy'){var q=$('#simPlan').value.split(':'),p=plan(q[0]),price=q[1]==='m'?p.pm:p.py,cut=Math.round(price*10)/100,sid=uid();
+    if(S.pt.invited<=S.pt.bought)S.pt.invited++;
+    S.pt.bought++;S.pt.total+=cut;S.pt.hold.push({id:sid,sum:cut,rel:Date.now()+14*86400000});
+    S.pt.hist.unshift({id:sid,t:Date.now(),k:'Начисление 10%',d:'покупка «'+p.n+'», '+(q[1]==='m'?'месяц':'год')+' — '+rub(price),s:cut,st:'На удержании'});
+    viewPartner();toast('Начислено '+rub(cut)+' — на удержании 14 дней')}
+  else if(act==='simskip'){var mv=settle(true);viewPartner();toast(mv?'Удержание завершено: '+rub(mv)+' стало доступно':'Нет начислений на удержании')}
+});
 
 ['dragover','drop'].forEach(function(ev){window.addEventListener(ev,function(e){if(!e.target.closest||!e.target.closest('#drop,#sdDrop'))e.preventDefault()})});
+route();
 })();
 </script>
 </body>
