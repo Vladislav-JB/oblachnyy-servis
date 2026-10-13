@@ -1563,7 +1563,7 @@ document.addEventListener('click',function(e){
     closeAll();$('#adTbl')?($('#adTbl').innerHTML=usersTable()):admRefresh();toast('Сохранено')}
   else if(act==='ublock'){var u3=A_USERS.filter(function(x){return x.id===arg[1]})[0];if(u3)u3.st=u3.st==='blocked'?'active':'blocked';closeAll();admRefresh();toast('Статус изменён')}
   else if(act==='saveplan'){
-    var p=plan(arg[1]);$$('[data-p="'+p.id+'"][data-pf]').forEach(function(i){var n=+i.value;if(n>=0)p[i.dataset.pf]=n});
+    var p=plan(a.dataset.p);$$('[data-p="'+p.id+'"][data-pf]').forEach(function(i){var n=+i.value;if(n>=0)p[i.dataset.pf]=n});
     setPlanFeat(p);if(p.id!=='free'&&(p.pm<=0||p.py<=0)){toast('Цена должна быть больше нуля');return}toast('Тариф «'+p.n+'» обновлён')}
   else if(act==='savecfg'){
     var pc=+$('#cfPct').value,hd=+$('#cfHold').value,mn=+$('#cfMin').value;
