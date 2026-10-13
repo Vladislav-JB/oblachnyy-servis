@@ -1,31 +1,460 @@
 <!doctype html>
-<html lang="ru" data-stub>
+<html lang="ru">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Облачный сервис · демо готовится</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Тучка — облачное хранилище для файлов, клиентов и проектов</title>
+<meta name="description" content="Демо облачного сервиса: загрузка файлов, защищённые ссылки с паролем и сроком, сбор файлов от клиентов, рабочие пространства, просмотр в браузере.">
 <meta name="robots" content="noindex">
-<meta http-equiv="refresh" content="120">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Manrope:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap">
 <style>
-:root{--bg:#F6F3EE;--ink:#1F1E1C;--muted:#6B655C;--acc:#8A6737}
-@media (prefers-color-scheme:dark){:root{--bg:#161615;--ink:#EDE7DC;--muted:#A9A195;--acc:#C9A66B}}
-*{box-sizing:border-box}html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Manrope,system-ui,sans-serif;display:grid;place-items:center;padding:24px}
-main{max-width:560px;text-align:center;display:flex;flex-direction:column;gap:18px;align-items:center}
-.k{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--acc);font-weight:600}
-h1{font:500 clamp(2rem,6vw,3rem)/1.1 "Cormorant Garamond",Georgia,serif;margin:0;text-wrap:balance}
-p{margin:0;color:var(--muted)}
-.bar{width:220px;height:3px;background:color-mix(in srgb,var(--acc) 20%,transparent);border-radius:3px;overflow:hidden}
-.bar i{display:block;height:100%;width:40%;background:var(--acc);animation:m 1.6s ease-in-out infinite}
-@keyframes m{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}
-@media (prefers-reduced-motion:reduce){.bar i{animation:none;width:60%}}
+:root{--bg:#f5f8fc;--card:#fff;--ink:#14213d;--mut:#5b6b85;--line:#dfe6f1;--acc:#2f6bff;--acc2:#6aa2ff;--ok:#16a34a;--r:16px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Manrope,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-text-size-adjust:100%}
+a{color:var(--acc)}
+button,input,select{font:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:12px 20px;font-weight:700;cursor:pointer;background:var(--acc);color:#fff;text-decoration:none;white-space:normal;text-align:center;transition:.15s}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn.sm{padding:8px 14px;font-size:14px;border-radius:10px}
+.btn.danger{background:#fff;color:#c0392b;border:1px solid #f1c4bf}
+header.top{position:sticky;top:0;z-index:20;background:rgba(245,248,252,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header .in{display:flex;align-items:center;gap:20px;height:64px}
+.logo{font-weight:800;font-size:22px;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px}
+.logo i{width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,var(--acc),var(--acc2));display:inline-block;position:relative}
+.logo i:after{content:"";position:absolute;left:6px;top:11px;width:18px;height:9px;background:#fff;border-radius:9px;box-shadow:4px -4px 0 -1px #fff}
+nav.m{display:flex;gap:18px;margin-left:auto;align-items:center}
+nav.m a{color:var(--mut);text-decoration:none;font-weight:600;font-size:15px}
+nav.m a:hover{color:var(--ink)}
+nav.m a.btn{color:#fff}
+nav.m a.btn.ghost{color:var(--ink)}
+.hero{padding:64px 0 40px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:center}
+.hero h1{font-size:clamp(30px,5vw,54px);line-height:1.08;margin:0 0 16px;letter-spacing:-.02em}
+.hero p{font-size:18px;color:var(--mut);margin:0 0 24px;max-width:520px}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+.hero small{display:block;margin-top:14px;color:var(--mut)}
+.mock{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:0 20px 50px -20px rgba(47,107,255,.35)}
+.mock .row{display:flex;align-items:center;gap:12px;padding:10px;border-radius:12px}
+.mock .row:nth-child(odd){background:#f5f8fc}
+.ic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:11px;font-weight:800;color:#fff;flex:none}
+.ic.pdf{background:#e5484d}.ic.img{background:#16a34a}.ic.vid{background:#8b5cf6}.ic.doc{background:#2f6bff}.ic.xls{background:#0e9f6e}.ic.oth{background:#64748b}.ic.aud{background:#d97706}
+.mock .t{flex:1;min-width:0}
+.mock .t b{display:block;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mock .t span{font-size:12px;color:var(--mut)}
+.pill{font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;background:#e8f0ff;color:var(--acc);white-space:nowrap}
+section{padding:56px 0}
+h2{font-size:clamp(26px,3.4vw,38px);margin:0 0 12px;letter-spacing:-.015em}
+.lead{color:var(--mut);max-width:640px;margin:0 0 32px;font-size:17px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.card h3{margin:12px 0 6px;font-size:18px}
+.card p{margin:0;color:var(--mut);font-size:15px}
+.card .em{font-size:26px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;counter-reset:s}
+.steps .card:before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--acc);color:#fff;font-weight:800}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:stretch}
+.plan{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px;display:flex;flex-direction:column}
+.plan.hot{border:2px solid var(--acc);box-shadow:0 16px 40px -20px rgba(47,107,255,.5)}
+.plan h3{margin:0}
+.plan .pr{font-size:34px;font-weight:800;margin:6px 0}
+.plan .pr small{font-size:15px;color:var(--mut);font-weight:600}
+.plan ul{padding:0;margin:14px 0 20px;list-style:none;color:var(--mut);font-size:15px;flex:1}
+.plan li{padding:5px 0 5px 24px;position:relative}
+.plan li:before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:800}
+.faq details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:10px}
+.faq summary{cursor:pointer;font-weight:700}
+.faq p{color:var(--mut);margin:10px 0 0}
+footer{border-top:1px solid var(--line);padding:28px 0;color:var(--mut);font-size:14px}
+footer .in{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between}
+#app{display:none}
+body.app #site{display:none}
+body.app #app{display:block}
+.shell{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:calc(100vh - 64px)}
+.side{background:#fff;border-right:1px solid var(--line);padding:18px 14px}
+.side h4{margin:18px 10px 8px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut)}
+.side button.nv{display:flex;width:100%;align-items:center;gap:10px;padding:10px;border:0;background:none;border-radius:10px;cursor:pointer;color:var(--ink);font-weight:600;text-align:left}
+.side button.nv:hover{background:#f0f5ff}
+.side button.nv.on{background:#e8f0ff;color:var(--acc)}
+.side .cnt{margin-left:auto;font-size:12px;color:var(--mut)}
+.quota{margin:20px 10px 0;font-size:13px;color:var(--mut)}
+.bar{height:8px;border-radius:8px;background:#e8eef8;margin:6px 0;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));width:0}
+.main{padding:24px;min-width:0}
+.bar-top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:18px}
+.bar-top h2{font-size:24px;margin:0;flex:1;min-width:160px}
+.drop{border:2px dashed #b7c9ee;border-radius:var(--r);background:#fff;padding:26px;text-align:center;color:var(--mut);margin-bottom:18px;transition:.15s}
+.drop.over{background:#eef4ff;border-color:var(--acc)}
+.drop b{color:var(--ink)}
+.files{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.f{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.f:last-child{border-bottom:0}
+.f .t{flex:1;min-width:0}
+.f .t b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
+.f .t span{font-size:13px;color:var(--mut)}
+.f .act{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.empty{padding:36px;text-align:center;color:var(--mut)}
+.modal{position:fixed;inset:0;background:rgba(20,33,61,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal.on{display:flex}
+.box{background:#fff;border-radius:20px;padding:24px;width:100%;max-width:520px;max-height:90vh;overflow:auto}
+.box.big{max-width:860px}
+.box h3{margin:0 0 14px;font-size:20px}
+label.fl{display:block;font-weight:700;font-size:14px;margin:12px 0 6px}
+.in-t{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:#fff}
+.in-t:focus{outline:2px solid var(--acc2);border-color:var(--acc)}
+.chk{display:flex;gap:10px;align-items:center;margin:12px 0}
+.linkbox{display:flex;gap:8px;margin-top:12px}
+.linkbox input{flex:1;min-width:0}
+.prev{display:grid;place-items:center;background:#0f172a;border-radius:12px;min-height:220px;overflow:hidden}
+.prev img,.prev video{max-width:100%;max-height:60vh;display:block}
+.prev iframe{width:100%;height:60vh;border:0;background:#fff}
+.prev .nop{color:#cbd5e1;padding:40px;text-align:center}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:80;max-width:90vw}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.note{font-size:13px;color:var(--mut);margin-top:10px}
+.mob-nav{display:none}
+@media(max-width:900px){
+ .hero{grid-template-columns:minmax(0,1fr);padding-top:36px}
+ .grid,.steps,.plans{grid-template-columns:minmax(0,1fr)}
+ nav.m a.h{display:none}
+ nav.m{gap:8px}
+ .logo{font-size:20px}
+ .shell{grid-template-columns:minmax(0,1fr)}
+ .side{display:none}
+ .mob-nav{display:flex;gap:8px;overflow-x:auto;padding:12px 16px;background:#fff;border-bottom:1px solid var(--line)}
+ .mob-nav button{flex:none;border:1px solid var(--line);background:#fff;border-radius:99px;padding:8px 14px;font-weight:600;cursor:pointer}
+ .mob-nav button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+ .main{padding:16px}
+ .f{flex-wrap:wrap}
+ .f .act{width:100%;justify-content:flex-start}
+}
+@media(max-width:480px){nav.m a.btn.ghost{display:none}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
-<body><main>
-<div class="k">Демо-версия по вашему ТЗ</div>
-<h1>Облачный сервис</h1>
-<div class="bar" aria-hidden="true"><i></i></div>
-<p>Сайт сейчас собирается по вашему техническому заданию.<br>Будет готов сегодня к <b>09:01</b> – по этой же ссылке.</p>
-<p style="font-size:.85rem">Страница обновится сама.</p>
-</main></body></html>
+<body>
+<header class="top"><div class="wrap in">
+  <a class="logo" href="#" id="goHome"><i></i>Тучка</a>
+  <nav class="m">
+    <a class="h" href="#kak" data-site>Возможности</a>
+    <a class="h" href="#tarify" data-site>Тарифы</a>
+    <a class="h" href="#faq" data-site>Вопросы</a>
+    <a class="btn sm ghost" href="#" id="goApp1">Войти</a>
+    <a class="btn sm" href="#" id="goApp2">Начать бесплатно</a>
+  </nav>
+</div></header>
+
+<div id="site">
+<main class="wrap">
+  <div class="hero">
+    <div>
+      <h1>Файлы клиентов и проектов — в одном облаке</h1>
+      <p>Загружайте, отправляйте защищённые ссылки и собирайте материалы от клиентов без регистрации. Просмотр файлов прямо в браузере.</p>
+      <div class="cta"><a class="btn" href="#" id="goApp3">Попробовать демо</a><a class="btn ghost" href="#tarify" data-site>Тарифы</a></div>
+      <small>Бесплатно 2 ГБ · без привязки карты · без рекламы</small>
+    </div>
+    <div class="mock" aria-hidden="true">
+      <div class="row"><span class="ic pdf">PDF</span><div class="t"><b>Договор_подряд.pdf</b><span>1,8 МБ · пространство «Ремонт»</span></div><span class="pill">по паролю</span></div>
+      <div class="row"><span class="ic img">ZIP</span><div class="t"><b>Макеты_лендинг.zip</b><span>248 МБ · ссылка до 30 октября</span></div><span class="pill">ссылка</span></div>
+      <div class="row"><span class="ic vid">MP4</span><div class="t"><b>Видео_для_клиента.mp4</b><span>412 МБ · просмотр в браузере</span></div><span class="pill">просмотр</span></div>
+      <div class="row"><span class="ic xls">XLS</span><div class="t"><b>Смета_октябрь.xlsx</b><span>96 КБ · загружено клиентом</span></div><span class="pill">сбор</span></div>
+    </div>
+  </div>
+
+  <section id="kak">
+    <h2>Всё, что нужно для работы с файлами</h2>
+    <p class="lead">Шесть задач, ради которых сервис и сделан. Каждую можно попробовать в демо-кабинете.</p>
+    <div class="grid">
+      <div class="card"><div class="em">⬆️</div><h3>Быстрая загрузка</h3><p>Файлы и целые папки — перетаскиванием. Большие файлы без лишних ограничений.</p></div>
+      <div class="card"><div class="em">🔗</div><h3>Защищённые ссылки</h3><p>Пароль и срок действия для любого файла или папки. Получателю аккаунт не нужен.</p></div>
+      <div class="card"><div class="em">📥</div><h3>Сбор файлов</h3><p>Клиент открывает вашу страницу и загружает материалы сам — без регистрации.</p></div>
+      <div class="card"><div class="em">🗂️</div><h3>Рабочие пространства</h3><p>Отдельное место под каждого клиента или проект, участники и права доступа.</p></div>
+      <div class="card"><div class="em">👁️</div><h3>Просмотр в браузере</h3><p>Фото, видео, аудио, PDF и документы открываются без скачивания.</p></div>
+      <div class="card"><div class="em">📱</div><h3>На любом устройстве</h3><p>Компьютер, планшет, телефон. Реклама не показывается.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Как это работает</h2>
+    <p class="lead">Три шага — и файл у получателя.</p>
+    <div class="steps">
+      <div class="card"><h3>Загрузите</h3><p>Перетащите файлы в окно или нажмите «Загрузить».</p></div>
+      <div class="card"><h3>Настройте ссылку</h3><p>Задайте пароль и срок — или оставьте открытой.</p></div>
+      <div class="card"><h3>Отправьте</h3><p>Получатель открывает ссылку и смотрит файл в браузере.</p></div>
+    </div>
+  </section>
+
+  <section id="tarify">
+    <h2>Тарифы</h2>
+    <p class="lead">Начните бесплатно — перейти на платный можно в любой момент. Цены в демо условные.</p>
+    <div class="plans">
+      <div class="plan"><h3>Старт</h3><div class="pr">0 ₽</div><ul><li>2 ГБ места</li><li>Ссылки на файлы</li><li>Просмотр в браузере</li><li>1 рабочее пространство</li></ul><a class="btn ghost goApp" href="#">Начать бесплатно</a></div>
+      <div class="plan hot"><h3>Pro</h3><div class="pr">490 ₽ <small>/ мес</small></div><ul><li>200 ГБ места</li><li>Пароль и срок ссылок</li><li>Сбор файлов от клиентов</li><li>10 пространств</li></ul><a class="btn goApp" href="#">Попробовать Pro</a></div>
+      <div class="plan"><h3>Студия</h3><div class="pr">1 490 ₽ <small>/ мес</small></div><ul><li>1 ТБ места</li><li>Команда до 10 человек</li><li>Права доступа по ролям</li><li>Приоритетная поддержка</li></ul><a class="btn ghost goApp" href="#">Выбрать Студию</a></div>
+    </div>
+  </section>
+
+  <section id="faq" class="faq">
+    <h2>Частые вопросы</h2>
+    <details><summary>Нужен ли аккаунт получателю?</summary><p>Нет. Получатель открывает ссылку и смотрит или скачивает файл. Для страницы сбора файлов регистрация тоже не нужна.</p></details>
+    <details><summary>Что будет, если закончится место?</summary><p>Старые файлы остаются доступными, новые загрузки приостанавливаются, пока вы не освободите место или не перейдёте на другой тариф. Мы ничего не удаляем автоматически.</p></details>
+    <details><summary>Можно ли отменить подписку?</summary><p>Да, в любой момент. Списания прекратятся, а доступ сохранится до конца оплаченного периода.</p></details>
+    <details><summary>Это рабочий сервис?</summary><p>Это демонстрационный прототип интерфейса: файлы хранятся только в вашем браузере и пропадают при обновлении страницы. Серверная часть — следующий этап.</p></details>
+  </section>
+</main>
+</div>
+
+<div id="app">
+  <div class="mob-nav" id="mobNav"></div>
+  <div class="shell">
+    <aside class="side">
+      <button class="nv on" data-v="files">📁 Все файлы <span class="cnt" id="cFiles">0</span></button>
+      <button class="nv" data-v="links">🔗 Мои ссылки <span class="cnt" id="cLinks">0</span></button>
+      <button class="nv" data-v="requests">📥 Сбор файлов <span class="cnt" id="cReq">0</span></button>
+      <h4>Пространства</h4>
+      <div id="wsList"></div>
+      <button class="nv" id="newWs">＋ Новое пространство</button>
+      <div class="quota">
+        <div id="qText">0 из 2 ГБ</div>
+        <div class="bar"><i id="qBar"></i></div>
+        <a href="#" class="goTariffs">Увеличить место</a>
+      </div>
+    </aside>
+    <div class="main">
+      <div class="bar-top"><h2 id="vTitle">Все файлы</h2><div id="vBtns"></div></div>
+      <div id="view"></div>
+      <p class="note">Демо: файлы хранятся только в памяти вашего браузера и пропадают при обновлении страницы. Ничего не отправляется на сервер.</p>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="picker" multiple hidden>
+
+<div class="modal" id="mShare"><div class="box">
+  <h3>Ссылка на файл</h3>
+  <div id="shName" class="note" style="margin:-6px 0 6px"></div>
+  <label class="fl" for="shPass">Пароль (необязательно)</label>
+  <input class="in-t" id="shPass" type="text" placeholder="Например, 1234" autocomplete="off">
+  <label class="fl" for="shExp">Срок действия</label>
+  <select class="in-t" id="shExp"><option value="0">Без ограничения</option><option value="1">1 день</option><option value="7" selected>7 дней</option><option value="30">30 дней</option></select>
+  <div class="chk"><input type="checkbox" id="shDl" checked><label for="shDl">Разрешить скачивание</label></div>
+  <button class="btn" id="shCreate" style="width:100%">Создать ссылку</button>
+  <div id="shOut" style="display:none">
+    <div class="linkbox"><input class="in-t" id="shUrl" readonly><button class="btn sm" id="shCopy">Копировать</button></div>
+    <p class="note">Проверьте, как ссылка выглядит для получателя: раздел «Мои ссылки» → «Открыть как получатель».</p>
+  </div>
+  <p style="margin:14px 0 0;text-align:right"><button class="btn sm ghost" data-close>Закрыть</button></p>
+</div></div>
+
+<div class="modal" id="mPrev"><div class="box big">
+  <h3 id="pvName"></h3>
+  <div class="prev" id="pvBox"></div>
+  <p style="margin:14px 0 0;display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap"><a class="btn sm ghost" id="pvDl" download>Скачать</a><button class="btn sm" data-close>Закрыть</button></p>
+</div></div>
+
+<div class="modal" id="mOpen"><div class="box">
+  <h3 id="opTitle">Вам отправили файл</h3>
+  <p class="note" id="opMeta" style="margin-top:0"></p>
+  <div id="opLock">
+    <label class="fl" for="opPass">Пароль</label>
+    <input class="in-t" id="opPass" type="password" autocomplete="off">
+    <p class="note" id="opErr" style="color:#c0392b;display:none">Неверный пароль</p>
+    <button class="btn" id="opGo" style="width:100%;margin-top:14px">Открыть</button>
+  </div>
+  <div id="opFile" style="display:none"><div class="prev" id="opBox"></div><p style="margin:14px 0 0"><a class="btn sm" id="opDl" download>Скачать файл</a></p></div>
+  <p style="margin:14px 0 0;text-align:right"><button class="btn sm ghost" data-close>Закрыть</button></p>
+</div></div>
+
+<div class="modal" id="mReq"><div class="box">
+  <h3>Новая страница сбора</h3>
+  <label class="fl" for="rqName">Что нужно получить</label>
+  <input class="in-t" id="rqName" placeholder="Например: логотип и фото для сайта">
+  <label class="fl" for="rqWs">Куда складывать</label>
+  <select class="in-t" id="rqWs"></select>
+  <button class="btn" id="rqCreate" style="width:100%;margin-top:16px">Создать</button>
+  <p style="margin:14px 0 0;text-align:right"><button class="btn sm ghost" data-close>Закрыть</button></p>
+</div></div>
+
+<div class="modal" id="mSend"><div class="box">
+  <h3 id="sdTitle">Загрузка файлов</h3>
+  <p class="note" style="margin-top:0">Так видит страницу клиент: регистрация не нужна.</p>
+  <div class="drop" id="sdDrop"><b>Перетащите файлы сюда</b><br>или <a href="#" id="sdPick">выберите на компьютере</a></div>
+  <div id="sdList" class="note"></div>
+  <p style="margin:14px 0 0;text-align:right"><button class="btn sm ghost" data-close>Закрыть</button></p>
+</div></div>
+
+<div class="modal" id="mWs"><div class="box">
+  <h3>Новое пространство</h3>
+  <label class="fl" for="wsName">Название</label>
+  <input class="in-t" id="wsName" placeholder="Например: Клиент «Орбита»">
+  <button class="btn" id="wsCreate" style="width:100%;margin-top:16px">Создать</button>
+  <p style="margin:14px 0 0;text-align:right"><button class="btn sm ghost" data-close>Закрыть</button></p>
+</div></div>
+
+<footer><div class="wrap in"><span>© Тучка — демонстрационный проект</span><span>Создан в «Веб-Ателье»</span></div></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+var LIMIT = 2*1024*1024*1024;
+var $ = function(s,r){return (r||document).querySelector(s)};
+var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function fmt(b){if(b<1024)return b+' Б';if(b<1048576)return (b/1024).toFixed(0)+' КБ';if(b<1073741824)return (b/1048576).toFixed(1).replace('.',',')+' МБ';return (b/1073741824).toFixed(2).replace('.',',')+' ГБ'}
+function toast(t){var e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(function(){e.classList.remove('on')},2600)}
+function kind(n,t){n=(n||'').toLowerCase();t=t||'';
+  if(/^image\//.test(t)||/\.(jpe?g|png|gif|webp|svg|avif)$/.test(n))return 'img';
+  if(/^video\//.test(t)||/\.(mp4|webm|mov|m4v)$/.test(n))return 'vid';
+  if(/^audio\//.test(t)||/\.(mp3|wav|ogg|m4a)$/.test(n))return 'aud';
+  if(/pdf$/.test(t)||/\.pdf$/.test(n))return 'pdf';
+  if(/\.(docx?|rtf|odt)$/.test(n))return 'doc';
+  if(/\.(xlsx?|csv|ods)$/.test(n))return 'xls';
+  return 'oth'}
+function ext(n){var m=/\.([a-z0-9]+)$/i.exec(n||'');return m?m[1].slice(0,4).toUpperCase():'FILE'}
+function uid(){return Math.random().toString(36).slice(2,9)}
+
+var S={ws:[{id:'w0',name:'Личное'},{id:'w1',name:'Ремонт квартиры'},{id:'w2',name:'Клиент «Орбита»'}],files:[],links:[],reqs:[],cur:'all',view:'files'};
+[['Договор_подряд.pdf','w1',1.8*1048576,'application/pdf'],['Смета_октябрь.xlsx','w1',96*1024,''],['Фото_до_ремонта.jpg','w1',3.4*1048576,'image/jpeg'],
+ ['Бриф_на_сайт.docx','w2',212*1024,''],['Логотип_Орбита.png','w2',640*1024,'image/png'],['Презентация.pdf','w2',5.2*1048576,'application/pdf']]
+ .forEach(function(x,i){S.files.push({id:uid(),name:x[0],ws:x[1],size:Math.round(x[2]),type:x[3],blob:null,date:Date.now()-i*146880000})});
+S.reqs.push({id:uid(),name:'Материалы для сайта',ws:'w2',got:0});
+
+function wsName(id){var w=S.ws.filter(function(x){return x.id===id})[0];return w?w.name:'—'}
+function used(){return S.files.reduce(function(a,f){return a+f.size},0)}
+function fileById(id){return S.files.filter(function(f){return f.id===id})[0]}
+
+function showApp(on){document.body.classList.toggle('app',!!on);window.scrollTo(0,0);if(on)render()}
+function toSite(id){showApp(false);if(id)setTimeout(function(){var t=document.getElementById(id);if(t)t.scrollIntoView()},30)}
+$('#goHome').addEventListener('click',function(e){e.preventDefault();showApp(false)});
+['#goApp1','#goApp2','#goApp3'].forEach(function(s){$(s).addEventListener('click',function(e){e.preventDefault();showApp(true)})});
+$$('.goApp').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();showApp(true)})});
+$$('[data-site]').forEach(function(a){a.addEventListener('click',function(e){if(document.body.classList.contains('app')){e.preventDefault();toSite(a.getAttribute('href').slice(1))}})});
+$$('.goTariffs').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();toSite('tarify')})});
+
+function open(id){$(id).classList.add('on')}
+function closeAll(){$$('.modal.on').forEach(function(m){m.classList.remove('on')});$('#pvBox').innerHTML='';$('#opBox').innerHTML=''}
+$$('[data-close]').forEach(function(b){b.addEventListener('click',closeAll)});
+$$('.modal').forEach(function(m){m.addEventListener('mousedown',function(e){if(e.target===m)closeAll()})});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAll()});
+
+function render(){
+  $('#cFiles').textContent=S.files.length;$('#cLinks').textContent=S.links.length;$('#cReq').textContent=S.reqs.length;
+  var u=used();$('#qText').textContent=fmt(u)+' из 2 ГБ';$('#qBar').style.width=Math.max(1,Math.min(100,u/LIMIT*100))+'%';
+  $('#wsList').innerHTML=S.ws.map(function(w){var n=S.files.filter(function(f){return f.ws===w.id}).length;
+    return '<button class="nv'+(S.cur===w.id&&S.view==='files'?' on':'')+'" data-ws="'+w.id+'">🗂️ '+esc(w.name)+'<span class="cnt">'+n+'</span></button>'}).join('');
+  $$('.side .nv[data-v]').forEach(function(b){b.classList.toggle('on',b.dataset.v===S.view&&S.cur==='all')});
+  $('#mobNav').innerHTML='<button data-v="files" class="'+(S.view==='files'&&S.cur==='all'?'on':'')+'">Все файлы</button><button data-v="links" class="'+(S.view==='links'?'on':'')+'">Ссылки</button><button data-v="requests" class="'+(S.view==='requests'?'on':'')+'">Сбор файлов</button>'+
+    S.ws.map(function(w){return '<button data-ws="'+w.id+'" class="'+(S.cur===w.id&&S.view==='files'?'on':'')+'">'+esc(w.name)+'</button>'}).join('')+'<button class="goTariffs2">Тарифы</button>';
+  var g=$('.goTariffs2');if(g)g.addEventListener('click',function(){toSite('tarify')});
+  if(S.view==='files')viewFiles();else if(S.view==='links')viewLinks();else viewReqs();
+}
+function row(f,extra){
+  return '<div class="f" data-id="'+f.id+'"><span class="ic '+kind(f.name,f.type)+'">'+esc(ext(f.name))+'</span><div class="t"><b data-act="open">'+esc(f.name)+'</b><span>'+fmt(f.size)+' · '+esc(wsName(f.ws))+' · '+new Date(f.date).toLocaleDateString('ru-RU')+'</span></div><div class="act">'+extra+'</div></div>'}
+function viewFiles(){
+  $('#vTitle').textContent=S.cur==='all'?'Все файлы':wsName(S.cur);
+  $('#vBtns').innerHTML='<button class="btn" id="bUp">⬆ Загрузить</button>';
+  var fl=S.files.filter(function(f){return S.cur==='all'||f.ws===S.cur}).sort(function(a,b){return b.date-a.date});
+  $('#view').innerHTML='<div class="drop" id="drop"><b>Перетащите файлы сюда</b><br>или нажмите «Загрузить»</div>'+
+    '<div class="files">'+(fl.length?fl.map(function(f){return row(f,'<button class="btn sm ghost" data-act="open">Просмотр</button><button class="btn sm" data-act="share">Ссылка</button><button class="btn sm danger" data-act="del">Удалить</button>')}).join(''):'<div class="empty">Здесь пока пусто. Загрузите первый файл.</div>')+'</div>';
+  $('#bUp').addEventListener('click',function(){$('#picker').click()});
+  var d=$('#drop');
+  ['dragenter','dragover'].forEach(function(ev){d.addEventListener(ev,function(e){e.preventDefault();d.classList.add('over')})});
+  ['dragleave','drop'].forEach(function(ev){d.addEventListener(ev,function(e){e.preventDefault();d.classList.remove('over')})});
+  d.addEventListener('drop',function(e){addFiles(e.dataTransfer.files,S.cur==='all'?'w0':S.cur)});
+}
+function viewLinks(){
+  $('#vTitle').textContent='Мои ссылки';$('#vBtns').innerHTML='';
+  $('#view').innerHTML='<div class="files">'+(S.links.length?S.links.map(function(l){var f=fileById(l.file);if(!f)return '';
+    var exp=l.exp?'до '+new Date(l.exp).toLocaleDateString('ru-RU'):'без срока';
+    return '<div class="f" data-lid="'+l.id+'"><span class="ic '+kind(f.name,f.type)+'">'+esc(ext(f.name))+'</span><div class="t"><b>'+esc(f.name)+'</b><span>tuchka.demo/s/'+l.id+' · '+exp+' · '+(l.pass?'🔒 пароль':'без пароля')+'</span></div><div class="act"><button class="btn sm" data-act="visit">Открыть как получатель</button><button class="btn sm danger" data-act="unlink">Отозвать</button></div></div>'}).join(''):'<div class="empty">Ссылок пока нет. Откройте «Все файлы» и нажмите «Ссылка» у нужного файла.</div>')+'</div>';
+}
+function viewReqs(){
+  $('#vTitle').textContent='Сбор файлов';$('#vBtns').innerHTML='<button class="btn" id="bReq">＋ Новая страница сбора</button>';
+  $('#view').innerHTML='<div class="files">'+(S.reqs.length?S.reqs.map(function(r){
+    return '<div class="f" data-rid="'+r.id+'"><span class="ic doc">📥</span><div class="t"><b>'+esc(r.name)+'</b><span>В пространство «'+esc(wsName(r.ws))+'» · получено файлов: '+r.got+'</span></div><div class="act"><button class="btn sm" data-act="reqopen">Открыть как клиент</button><button class="btn sm danger" data-act="reqdel">Удалить</button></div></div>'}).join(''):'<div class="empty">Создайте страницу — клиент загрузит файлы по ссылке без регистрации.</div>')+'</div>';
+  $('#bReq').addEventListener('click',function(){
+    $('#rqWs').innerHTML=S.ws.map(function(w){return '<option value="'+w.id+'">'+esc(w.name)+'</option>'}).join('');$('#rqName').value='';open('#mReq')});
+}
+
+function go(v,ws){S.view=v;S.cur=ws||'all';render()}
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-v],[data-ws]');
+  if(b&&(b.closest('.side')||b.closest('#mobNav'))){if(b.dataset.ws)go('files',b.dataset.ws);else go(b.dataset.v,'all')}
+});
+$('#newWs').addEventListener('click',function(){$('#wsName').value='';open('#mWs')});
+$('#wsCreate').addEventListener('click',function(){var n=$('#wsName').value.trim();if(!n){toast('Введите название');return}
+  var id='w'+uid();S.ws.push({id:id,name:n});closeAll();go('files',id);toast('Пространство создано')});
+
+function addFiles(list,ws){
+  var arr=Array.prototype.slice.call(list||[]);var n=0;
+  arr.forEach(function(f){
+    if(used()+f.size>LIMIT){toast('Не хватает места: лимит 2 ГБ. Перейдите на тариф Pro');return}
+    S.files.push({id:uid(),name:f.name,ws:ws,size:f.size,type:f.type,blob:f,date:Date.now()});n++});
+  if(n){toast('Загружено файлов: '+n);render()}
+  return n}
+$('#picker').addEventListener('change',function(e){addFiles(e.target.files,S.cur==='all'?'w0':S.cur);e.target.value=''});
+
+var shFile=null;
+document.addEventListener('click',function(e){
+  var a=e.target.closest('[data-act]');if(!a)return;
+  var rowEl=a.closest('.f');if(!rowEl)return;
+  var act=a.dataset.act,id=rowEl.dataset.id,lid=rowEl.dataset.lid,rid=rowEl.dataset.rid;
+  if(act==='open'){preview(fileById(id))}
+  else if(act==='share'){shFile=id;$('#shName').textContent=fileById(id).name;$('#shPass').value='';$('#shOut').style.display='none';$('#shCreate').style.display='';open('#mShare')}
+  else if(act==='del'){S.files=S.files.filter(function(f){return f.id!==id});S.links=S.links.filter(function(l){return l.file!==id});render();toast('Файл удалён')}
+  else if(act==='unlink'){S.links=S.links.filter(function(l){return l.id!==lid});render();toast('Ссылка отозвана')}
+  else if(act==='visit'){openShared(S.links.filter(function(l){return l.id===lid})[0])}
+  else if(act==='reqopen'){openReq(S.reqs.filter(function(r){return r.id===rid})[0])}
+  else if(act==='reqdel'){S.reqs=S.reqs.filter(function(r){return r.id!==rid});render()}
+});
+$('#shCreate').addEventListener('click',function(){
+  var days=+$('#shExp').value;
+  var l={id:uid()+uid().slice(0,3),file:shFile,pass:$('#shPass').value.trim(),exp:days?Date.now()+days*86400000:0,dl:$('#shDl').checked};
+  S.links.push(l);$('#shUrl').value='https://tuchka.demo/s/'+l.id;$('#shOut').style.display='block';$('#shCreate').style.display='none';render();toast('Ссылка создана')});
+$('#shCopy').addEventListener('click',function(){var i=$('#shUrl');i.select();try{document.execCommand('copy')}catch(_){}toast('Скопировано')});
+
+function mediaInto(box,f,dlA,allowDl){
+  var k=kind(f.name,f.type);box.innerHTML='';dlA.style.display='none';
+  var url=null;if(f.blob){url=URL.createObjectURL(f.blob);dlA.href=url;dlA.download=f.name;if(allowDl!==false)dlA.style.display=''}
+  if(!url){box.innerHTML='<div class="nop"><div style="font-size:42px">📄</div><p><b>'+esc(f.name)+'</b><br>'+fmt(f.size)+'<br>Это пример файла: загрузите свой — и он откроется здесь.</p></div>';return}
+  if(k==='img'){var im=document.createElement('img');im.src=url;im.alt=f.name;box.appendChild(im)}
+  else if(k==='vid'){var v=document.createElement('video');v.src=url;v.controls=true;box.appendChild(v)}
+  else if(k==='aud'){var au=document.createElement('audio');au.src=url;au.controls=true;au.style.margin='40px';box.appendChild(au)}
+  else if(k==='pdf'){var fr=document.createElement('iframe');fr.src=url;fr.title=f.name;box.appendChild(fr)}
+  else{box.innerHTML='<div class="nop"><div style="font-size:42px">📎</div><p>Предпросмотр этого типа — в полной версии.<br>Файл можно скачать.</p></div>'}
+}
+function preview(f){if(!f)return;$('#pvName').textContent=f.name;mediaInto($('#pvBox'),f,$('#pvDl'));open('#mPrev')}
+
+var openLnk=null;
+function openShared(l){if(!l)return;var f=fileById(l.file);if(!f)return;openLnk=l;
+  $('#opMeta').textContent=f.name+' · '+fmt(f.size)+(l.exp?' · действует до '+new Date(l.exp).toLocaleDateString('ru-RU'):'');
+  $('#opPass').value='';$('#opErr').style.display='none';
+  if(l.pass){$('#opLock').style.display='';$('#opFile').style.display='none'}
+  else{$('#opLock').style.display='none';$('#opFile').style.display='';mediaInto($('#opBox'),f,$('#opDl'),l.dl)}
+  open('#mOpen')}
+$('#opGo').addEventListener('click',function(){
+  if($('#opPass').value===openLnk.pass){var f=fileById(openLnk.file);
+    $('#opLock').style.display='none';$('#opFile').style.display='';mediaInto($('#opBox'),f,$('#opDl'),openLnk.dl)}
+  else $('#opErr').style.display='block'});
+$('#opPass').addEventListener('keydown',function(e){if(e.key==='Enter')$('#opGo').click()});
+
+$('#rqCreate').addEventListener('click',function(){var n=$('#rqName').value.trim();if(!n){toast('Опишите, что нужно получить');return}
+  S.reqs.push({id:uid(),name:n,ws:$('#rqWs').value,got:0});closeAll();render();toast('Страница сбора создана')});
+var curReq=null;
+function openReq(r){if(!r)return;curReq=r;$('#sdTitle').textContent=r.name;$('#sdList').innerHTML='';open('#mSend')}
+$('#sdPick').addEventListener('click',function(e){e.preventDefault();var i=document.createElement('input');i.type='file';i.multiple=true;
+  i.addEventListener('change',function(){recv(i.files)});i.click()});
+var sd=$('#sdDrop');
+['dragenter','dragover'].forEach(function(ev){sd.addEventListener(ev,function(e){e.preventDefault();sd.classList.add('over')})});
+['dragleave','drop'].forEach(function(ev){sd.addEventListener(ev,function(e){e.preventDefault();sd.classList.remove('over')})});
+sd.addEventListener('drop',function(e){recv(e.dataTransfer.files)});
+function recv(list){var n=addFiles(list,curReq.ws);if(n){curReq.got+=n;$('#sdList').textContent='✅ Отправлено файлов: '+n+'. Они уже в пространстве «'+wsName(curReq.ws)+'».'}}
+
+['dragover','drop'].forEach(function(ev){window.addEventListener(ev,function(e){if(!e.target.closest||!e.target.closest('#drop,#sdDrop'))e.preventDefault()})});
+})();
+</script>
+</body>
+</html>
