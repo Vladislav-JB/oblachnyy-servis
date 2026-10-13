@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Тучка — облачное хранилище для файлов, клиентов и проектов</title>
+<title>Тучка — облако для файлов клиентов и проектов</title>
 <meta name="description" content="Демо облачного сервиса: файлы, защищённые ссылки, сбор файлов от клиентов, рабочие пространства, тарифы, кошелёк и партнёрская программа.">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <style>
 :root{--bg:#f5f8fc;--card:#fff;--ink:#14213d;--mut:#5b6b85;--line:#dfe6f1;--acc:#2f6bff;--acc2:#6aa2ff;--ok:#16a34a;--warn:#b45309;--r:16px}
 *{box-sizing:border-box}
@@ -176,6 +176,89 @@ label.fl{display:block;font-weight:700;font-size:14px;margin:12px 0 6px}
 }
 @media(max-width:480px){nav.m a.btn.ghost,.chip.hide-s{display:none}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+/* ===== стиль лендинга v2 ===== */
+body{background:#fff;font-family:Inter,ui-sans-serif,system-ui,"Segoe UI",sans-serif}
+body.app{background:var(--bg)}
+:root{--acc:#3b82f6;--acc2:#60a5fa}
+header.top{background:rgba(255,255,255,.9);border-bottom:1px solid #eef1f6}
+.btn.pill{border-radius:99px;padding:13px 26px}
+.hero2{padding:72px 0 40px;text-align:left;max-width:860px;position:relative}
+.hero2:before{content:"";position:absolute;right:-30%;top:-20px;width:70%;height:420px;background:radial-gradient(closest-side,rgba(59,130,246,.16),transparent);pointer-events:none;z-index:-1}
+.badge{display:inline-block;border:1px solid #cfe0ff;background:#eef5ff;color:#2563eb;font-weight:600;font-size:14px;padding:6px 14px;border-radius:99px;margin-bottom:22px}
+.hero2 h1{font-size:clamp(34px,5.4vw,60px);line-height:1.06;font-weight:600;margin:0 0 20px;letter-spacing:-.025em;color:#111827}
+.hero2 p{font-size:19px;color:#5b6475;max-width:640px;margin:0 0 30px}
+.hero2 .cta{display:flex;gap:12px;flex-wrap:wrap}
+.fmw{border:1px solid #e3e8f0;border-radius:18px;background:#fff;box-shadow:0 30px 60px -30px rgba(30,64,175,.25);overflow:hidden;margin:8px 0 24px}
+.fm-top{display:flex;align-items:center;gap:6px;padding:10px 14px;border-bottom:1px solid #eef1f6;background:#fafbfd}
+.fm-top i{width:10px;height:10px;border-radius:50%;background:#dfe4ec}
+.fm-top span{margin-left:10px;font-size:13px;color:#6b7280}
+.fm-b{display:grid;grid-template-columns:200px minmax(0,1fr)}
+.fm-s{border-right:1px solid #eef1f6;padding:14px 10px;background:#fafbfd}
+.fs-h{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#9aa3b2;margin:10px 8px 6px}
+.fs{padding:7px 10px;border-radius:8px;font-size:14px;color:#374151}
+.fs.on{background:#e8f0ff;color:#1d4ed8;font-weight:600}
+.fs-q{margin:18px 8px 0}
+.fs-q small{color:#6b7280;font-size:12px}
+.fm-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:14px;padding:18px}
+.tl{border:1px solid #eef1f6;border-radius:12px;padding:10px;text-align:center;font-size:13px;color:#374151}
+.tl span{display:block;margin-top:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fo{height:60px;margin:0 auto;width:78px;background:#fbbf24;border-radius:6px 10px 10px 10px;position:relative;margin-top:6px}
+.fo:before{content:"";position:absolute;left:0;top:-8px;width:32px;height:10px;background:#f59e0b;border-radius:6px 6px 0 0}
+.fo.sm{width:34px;height:26px;margin:0;flex:none;border-radius:4px 6px 6px 6px}
+.fo.sm:before{width:14px;height:5px;top:-4px}
+.th{height:74px;border-radius:8px}
+.th.dc{background:#f4f6fa;display:grid;place-items:center}
+.th.dc b{color:#fff;font-size:12px;padding:5px 9px;border-radius:6px}
+.fb{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center;padding:72px 0}
+.fb.rev .fb-t{order:2}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#3b82f6;margin-bottom:10px}
+.fb h2,.tar h2,.part h2,.endcta h2{font-weight:600;color:#111827}
+.fb p{color:#5b6475;font-size:17px;margin:0 0 18px}
+.cl{list-style:none;padding:0;margin:0 0 18px}
+.cl li{display:flex;gap:10px;align-items:flex-start;padding:5px 0;color:#1f2937}
+.cl svg{flex:none;margin-top:3px}
+.lnk{font-weight:600;text-decoration:none}
+.fb-m{background:linear-gradient(135deg,#eef5ff,#f8fbff);border-radius:24px;padding:34px;display:grid;place-items:center;min-height:300px}
+.ui{background:#fff;border:1px solid #e3e8f0;border-radius:16px;padding:18px;width:100%;max-width:380px;box-shadow:0 20px 40px -24px rgba(30,64,175,.35)}
+.ui-h{font-weight:700;margin-bottom:12px;font-size:15px}
+.ui-r{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #f1f3f8;font-size:14px;color:#374151}
+.tg{width:38px;height:22px;border-radius:99px;background:#d6dbe5;position:relative;display:inline-block}
+.tg:after{content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff}
+.tg.on{background:#3b82f6}.tg.on:after{left:19px}
+.sel{background:#f1f4fa;border-radius:8px;padding:4px 10px;font-weight:600;font-size:13px}
+.ui-in{background:#f6f8fc;border:1px solid #e3e8f0;border-radius:10px;padding:10px 12px;margin:10px 0;letter-spacing:.2em;color:#6b7280}
+.ui-l{margin:14px 0 10px;background:#f6f8fc;border-radius:10px;padding:10px 12px;font-size:13px;color:#2563eb;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ui-b{background:#3b82f6;color:#fff;text-align:center;font-weight:600;padding:10px;border-radius:99px;margin-top:10px;font-size:14px}
+.ui-b.ghost{background:#fff;color:#1d4ed8;border:1px dashed #b7c9ee}
+.ws{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid #eef1f6;border-radius:12px;margin-bottom:8px}
+.ws.on{border-color:#bfd4ff;background:#f4f8ff}
+.ws b{display:block;font-size:14px}
+.ws small{color:#6b7280;font-size:12px}
+.ui.pv{padding:0;overflow:hidden}
+.pv-i{height:200px;background:linear-gradient(135deg,#7dd3fc,#2563eb 60%,#1e3a8a)}
+.pv-b{padding:14px 16px}
+.pv-b b{display:block}
+.pv-b small{color:#6b7280}
+.ui-t{font-weight:700;font-size:17px}
+.ui-s{color:#6b7280;font-size:14px;margin:6px 0 14px}
+.dz{border:2px dashed #b7c9ee;border-radius:12px;padding:26px 10px;text-align:center;color:#6b7280;background:#f7faff;font-size:14px}
+.tar{padding:56px 0}
+.part{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;background:#0f2a5c;color:#fff;border-radius:24px;padding:36px;margin:24px 0}
+.part h2{color:#fff;margin:0 0 6px}
+.part p{margin:0;color:#c9d6f0;max-width:540px}
+.part .eyebrow{color:#93c5fd}
+.part .btn{background:#fff;color:#0f2a5c}
+.endcta{text-align:center;padding:72px 0 40px}
+.endcta p{color:#5b6475;margin:0 0 20px}
+@media(max-width:900px){
+ .fb{grid-template-columns:minmax(0,1fr);gap:24px;padding:40px 0}
+ .fb.rev .fb-t{order:0}
+ .fm-b{grid-template-columns:minmax(0,1fr)}
+ .fm-s{display:none}
+ .fm-g{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .hero2{padding-top:40px}
+ .part{padding:24px}
+}
 </style>
 </head>
 <body>
@@ -396,33 +479,48 @@ function plansHtml(){
   '<div class="plans">'+PLANS.map(function(p){return planCard(p)}).join('')+'</div>'+
   '<p class="note">* Объёмы места на платных тарифах в демо условные. Оплата — через кошелёк сервиса: пополните его в кабинете.</p>'}
 
-function pageHome(){return '<div class="hero"><div><h1>Файлы клиентов и проектов — в одном облаке</h1>'+
- '<p>Загружайте, отправляйте защищённые ссылки и собирайте материалы от клиентов без регистрации. Просмотр файлов прямо в браузере.</p>'+
- '<div class="cta"><a class="btn" href="#/app/files" data-needauth>Попробовать демо</a><a class="btn ghost" href="#/pricing">Тарифы</a></div>'+
- '<small>Бесплатно 2 ГБ · без привязки карты · без рекламы</small></div>'+
- '<div class="mock" aria-hidden="true">'+
- '<div class="row"><span class="ic pdf">PDF</span><div class="t"><b>Договор_подряд.pdf</b><span>1,8 МБ · пространство «Ремонт»</span></div><span class="pill">по паролю</span></div>'+
- '<div class="row"><span class="ic img">ZIP</span><div class="t"><b>Макеты_лендинг.zip</b><span>248 МБ · ссылка до 30 октября</span></div><span class="pill">ссылка</span></div>'+
- '<div class="row"><span class="ic vid">MP4</span><div class="t"><b>Видео_для_клиента.mp4</b><span>412 МБ · просмотр в браузере</span></div><span class="pill">просмотр</span></div>'+
- '<div class="row"><span class="ic xls">XLS</span><div class="t"><b>Смета_октябрь.xlsx</b><span>96 КБ · загружено клиентом</span></div><span class="pill">сбор</span></div></div></div>'+
- '<section><h2>Всё, что нужно для работы с файлами</h2><p class="lead">Нажмите на карточку — там подробности. Каждую возможность можно попробовать в демо-кабинете.</p><div class="grid">'+
- [['⬆️','Передача больших файлов','send-large-files','Файлы и папки одной ссылкой, получателю аккаунт не нужен.'],
-  ['🔗','Защищённые ссылки','protected-links','Пароль и срок действия для любого файла или папки.'],
-  ['📥','Запрос файлов','file-requests','Клиент загружает материалы сам, без регистрации.'],
-  ['🗂️','Рабочие пространства','workspaces','Отдельное место под каждого клиента или проект.'],
-  ['🔒','Безопасная передача','secure-file-sharing','Файлы видят только те, кому вы дали ссылку.'],
-  ['💸','Партнёрская программа','blog:partnerskaya-programma','10% с первой оплаты приглашённого вами пользователя.']]
- .map(function(c){var h=c[2].indexOf('blog:')===0?'#/blog/'+c[2].slice(5):'#/p/'+c[2];return '<a class="card" href="'+h+'"><div class="em">'+c[0]+'</div><h3>'+c[1]+'</h3><p>'+c[3]+'</p></a>'}).join('')+'</div></section>'+
- '<section><h2>Как это работает</h2><p class="lead">Три шага — и файл у получателя.</p><div class="steps">'+
- '<div class="card"><h3>Загрузите</h3><p>Перетащите файлы в окно или нажмите «Загрузить».</p></div>'+
- '<div class="card"><h3>Настройте ссылку</h3><p>Задайте пароль и срок — или оставьте открытой.</p></div>'+
- '<div class="card"><h3>Отправьте</h3><p>Получатель открывает ссылку и смотрит файл в браузере.</p></div></div></section>'+
- '<section id="tarify"><h2>Тарифы</h2><p class="lead">Начните бесплатно — перейти на платный можно в любой момент.</p>'+plansHtml()+'</section>'+
- '<section class="faq"><h2>Частые вопросы</h2>'+
- '<details><summary>Нужен ли аккаунт получателю?</summary><p>Нет. Получатель открывает ссылку и смотрит или скачивает файл. Для страницы сбора файлов регистрация тоже не нужна.</p></details>'+
- '<details><summary>Что будет, если закончится место?</summary><p>Старые файлы остаются доступными, новые загрузки приостанавливаются, пока вы не освободите место или не перейдёте на другой тариф. Мы ничего не удаляем автоматически.</p></details>'+
- '<details><summary>Можно ли отменить подписку?</summary><p>Да, в любой момент. Списания прекратятся, а доступ сохранится до конца оплаченного периода.</p></details>'+
- '<details><summary>Это рабочий сервис?</summary><p>Это демонстрационный прототип интерфейса: файлы и «деньги» существуют только в вашем браузере и пропадают при обновлении страницы. Серверная часть, хранилище и платежи — следующий этап.</p></details></section>'}
+function fm(){
+ var fold=function(n,c){return '<div class="tl"><div class="fo"></div><span>'+n+'</span></div>'};
+ var img=function(n,a,b){return '<div class="tl"><div class="th" style="background:linear-gradient(135deg,'+a+','+b+')"></div><span>'+n+'</span></div>'};
+ var doc=function(n,l,c){return '<div class="tl"><div class="th dc"><b style="background:'+c+'">'+l+'</b></div><span>'+n+'</span></div>'};
+ return '<div class="fmw" aria-hidden="true"><div class="fm-top"><i></i><i></i><i></i><span>Клиент «Орбита» / Макеты</span></div>'+
+ '<div class="fm-b"><div class="fm-s"><div class="fs-h">Пространства</div><div class="fs on">Клиент «Орбита»</div><div class="fs">Ремонт квартиры</div><div class="fs">Личное</div>'+
+ '<div class="fs-h">Разделы</div><div class="fs">Недавние</div><div class="fs">Общий доступ</div><div class="fs">Корзина</div>'+
+ '<div class="fs-q"><div class="bar"><i style="width:34%"></i></div><small>0,7 из 2 ГБ</small></div></div>'+
+ '<div class="fm-g">'+fold('Договоры')+fold('Логотипы')+fold('Фото')+img('hero-banner.jpg','#7dd3fc','#1d4ed8')+doc('Смета.xlsx','XLS','#16a34a')+img('mockup-2.png','#fdba74','#c2410c')+doc('Бриф.docx','DOC','#2563eb')+img('team.jpg','#a7f3d0','#047857')+doc('Договор.pdf','PDF','#dc2626')+'</div></div></div>'}
+function pageHome(){
+ var chk='<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#dbeafe"/><path d="M5 9.2l2.6 2.6L13 6.4" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+ var li=function(a){return a.map(function(x){return '<li>'+chk+'<span>'+x+'</span></li>'}).join('')};
+ var blk=function(eyebrow,h,p,items,mock,rev,cta){return '<section class="fb'+(rev?' rev':'')+'"><div class="fb-t"><div class="eyebrow">'+eyebrow+'</div><h2>'+h+'</h2><p>'+p+'</p><ul class="cl">'+li(items)+'</ul>'+(cta||'')+'</div><div class="fb-m">'+mock+'</div></section>'};
+ var m1='<div class="ui"><div class="ui-h">Ссылка на «Договор_подряд.pdf»</div>'+
+   '<div class="ui-r"><span>Пароль</span><b class="tg on"></b></div><div class="ui-in">••••••••</div>'+
+   '<div class="ui-r"><span>Срок действия</span><b class="sel">7 дней</b></div>'+
+   '<div class="ui-r"><span>Разрешить скачивание</span><b class="tg"></b></div>'+
+   '<div class="ui-l">tuchka.demo/s/k4n8x2q</div><div class="ui-b">Копировать ссылку</div></div>';
+ var m2='<div class="ui"><div class="ui-h">Пространства</div>'+
+   [['Клиент «Орбита»','18 файлов','3 участника'],['Ремонт квартиры','42 файла','2 участника'],['Студия «Лён»','7 файлов','1 участник']].map(function(x,i){return '<div class="ws'+(i===0?' on':'')+'"><div class="fo sm"></div><div><b>'+x[0]+'</b><small>'+x[1]+' · '+x[2]+'</small></div></div>'}).join('')+
+   '<div class="ui-b ghost">＋ Новое пространство</div></div>';
+ var m3='<div class="ui pv"><div class="pv-i"></div><div class="pv-b"><b>hero-banner.jpg</b><small>2,4 МБ · открыт в браузере</small></div></div>';
+ var m4='<div class="ui"><div class="ui-h">Страница сбора</div><div class="ui-t">Материалы для сайта</div><div class="ui-s">Загрузите логотип, фото и тексты. Регистрация не нужна.</div>'+
+   '<div class="dz">Перетащите файлы сюда</div><div class="ui-b">Отправить</div></div>';
+ return '<div class="hero2"><div class="badge">Файлы для работы с клиентами</div>'+
+  '<h1>Облако, в котором файлы клиентов не теряются</h1>'+
+  '<p>Загружайте материалы, отправляйте ссылки с паролем и собирайте файлы от клиентов без регистрации. Для фрилансеров и небольших команд.</p>'+
+  '<div class="cta"><a class="btn pill" href="#/app/files" data-needauth>Попробовать бесплатно</a><a class="btn pill ghost" href="#/pricing">Тарифы</a></div></div>'+
+  fm()+
+  blk('Безопасная передача','Отправляйте файлы и решайте, кто их увидит','Пароль и срок действия для каждой ссылки. Передумали — отозвали одним нажатием, файл остаётся у вас.',['Пароль и срок на каждую ссылку','Запрет скачивания: только просмотр','Все ссылки в одном списке'],m1,false,'<a class="lnk" href="#/p/protected-links">Подробнее о ссылках →</a>')+
+  blk('Рабочие пространства','Один клиент — одно пространство','Файлы разных проектов не перемешиваются: у каждого клиента своя папка, свои участники и свои права.',['Отдельное пространство под проект','Приглашение участников','Общий счётчик места на аккаунт'],m2,true,'<a class="lnk" href="#/p/workspaces">О пространствах →</a>')+
+  blk('Просмотр в браузере','Открывайте файлы, не скачивая','Фото, видео, аудио и PDF открываются сразу. Клиенту не нужно ставить программы, чтобы посмотреть макет.',['Фото, видео, аудио и PDF','Работает на телефоне и компьютере','Без рекламы'],m3,false,'')+
+  blk('Сбор файлов','Клиент загружает материалы сам','Отправьте ссылку на страницу сбора. Материалы попадут в нужное пространство, а не затеряются в переписке.',['Регистрация клиенту не нужна','Вы пишете, что именно нужно','Файлы сразу в вашем пространстве'],m4,true,'<a class="lnk" href="#/p/file-requests">О сборе файлов →</a>')+
+  '<section class="tar" id="tarify"><h2>Тарифы</h2><p class="lead">Начните бесплатно, платный тариф подключается в любой момент.</p>'+plansHtml()+'</section>'+
+  '<section class="part"><div><div class="eyebrow">Партнёрская программа</div><h2>10% с первой оплаты приглашённого</h2><p>Делитесь личной ссылкой и получайте вознаграждение. Вывод через СБП от 1 000 ₽.</p></div><a class="btn pill" href="#/blog/partnerskaya-programma">Как это работает</a></section>'+
+  '<section><div class="eyebrow">Блог</div><h2>Материалы</h2><div class="grid">'+BLOG.map(function(b){return '<a class="card" href="#/blog/'+b.id+'"><h3 style="margin-top:0">'+esc(b.t)+'</h3><p>'+esc(b.d)+'</p></a>'}).join('')+'</div></section>'+
+  '<section class="faq"><h2>Частые вопросы</h2>'+
+  '<details><summary>Нужен ли аккаунт получателю?</summary><p>Нет. Получатель открывает ссылку и смотрит или скачивает файл. Для страницы сбора файлов регистрация тоже не нужна.</p></details>'+
+  '<details><summary>Что будет, если закончится место?</summary><p>Старые файлы остаются доступными, новые загрузки приостанавливаются, пока вы не освободите место или не перейдёте на другой тариф. Мы ничего не удаляем автоматически.</p></details>'+
+  '<details><summary>Можно ли отменить подписку?</summary><p>Да, в любой момент. Списания прекратятся, а доступ сохранится до конца оплаченного периода.</p></details>'+
+  '<details><summary>Это рабочий сервис?</summary><p>Это демонстрационный прототип интерфейса: файлы и «деньги» существуют только в вашем браузере и пропадают при обновлении страницы. Серверная часть, хранилище и платежи — следующий этап.</p></details></section>'+
+  '<section class="endcta"><h2>Начните с бесплатных 2 ГБ</h2><p>Карта не нужна.</p><a class="btn pill" href="#/app/files" data-needauth>Попробовать бесплатно</a></section>'}
 function pagePricing(){return '<h1 class="pg">Тарифы</h1><p class="lead">Четыре тарифа: бесплатный и три платных. Переключайте период — цены пересчитаются.</p>'+plansHtml()}
 function pageScen(k){var s=SCEN[k];if(!s)return pageHome();
  return '<div class="crumb"><a href="#/">Главная</a> / '+esc(s.t)+'</div><h1 class="pg">'+esc(s.t)+'</h1><p class="lead">'+esc(s.lead)+'</p>'+
