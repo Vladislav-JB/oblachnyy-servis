@@ -502,7 +502,24 @@ body.home header.top .in{height:84px}
  .pb{border-top:0}
  .pg-h h2{font-size:22px;font-weight:500}
 }
-</style>
+/* ===== кабинет: вторая подгонка ===== */
+@media(min-width:901px){
+ .sbtn.ghost{margin-top:6px}
+ .sn-l{margin-top:30px}
+ .stor{margin-top:32px}
+ .wsw{margin-top:auto}
+ .ap-top .srch{margin-left:-8px;flex:0 1 720px;max-width:720px}
+ .ap.col{grid-template-columns:0 minmax(0,1fr)}
+ .ap.col .ap-s{display:none}
+ .ap.col .ap-m{padding-left:16px}
+ .ph{gap:6px;padding:10px 24px 10px 20px}
+ .ph-t{gap:8px}
+ .sbt{width:32px;height:32px;margin:0}
+ .seg2{gap:4px}
+ .ph-c .chip2{margin-top:29px;margin-left:4px}
+ .ph-c .chip2[data-act=emptytrash]{margin-left:0}
+}
+@media(max-width:900px){.sbt{display:none}}</style>
 </head>
 <body>
 <header class="top"><div class="wrap in">
@@ -954,7 +971,7 @@ function renderApp(){
      '<nav class="sn-l">'+navItem('files','home','Все файлы')+treeHtml()+navItem('shares','users','Доступные мне')+navItem('recent','clock','Недавние')+navItem('starred','star','Избранное')+navItem('trash','trash','Корзина')+'</nav>'+
      '<nav class="sn-l sec">'+navItem('support','support','Поддержка')+navItem('partner','heart','Партнёрство')+'</nav>'+
      '<div class="stor"><div class="stor-t">'+ic('db',16)+'<span>Использовано '+fmt(u)+' из '+plan(S.plan).gb+' ГБ</span></div><div class="bar"><i style="width:'+pct+'%"></i></div>'+
-     '<a class="pl" href="#/pricing">Улучшить тариф</a></div>'+'<button class="wsw" data-act="wsmenu"><span><b>'+esc(S.curWs?wsName(S.curWs):'По умолчанию')+'</b><small>'+(S.curWs?'Рабочее пространство':'Личное рабочее пространство')+'</small></span>'+ic('sort',16)+'</button>'+
+     '<a class="pl" href="#/pricing">Улучшить тариф</a></div>'+(plan(S.plan).ws?'<button class="wsw" data-act="wsmenu"><span><b>'+esc(S.curWs?wsName(S.curWs):'По умолчанию')+'</b><small>'+(S.curWs?'Рабочее пространство':'Личное рабочее пространство')+'</small></span>'+ic('sort',16)+'</button>':'')+
    '</aside>'+
    '<div class="ap-m">'+
      '<div class="ap-top">'+
@@ -1020,8 +1037,8 @@ function mainFiles(){
   if(v==='files'&&!q){
     var path=folderPath(S.parent),crumb='<button class="cb" data-act="wsmenu">'+esc(wsLabel(S.curWs))+ic('chev',16)+'</button>';
     path.forEach(function(p,i){crumb+='<span class="sl">/</span>'+(i===path.length-1?'<b class="cur">'+esc(p.name)+'</b>':'<button class="cb" data-go="#/app/files/'+p.id+'">'+esc(p.name)+'</button>')});
-    head='<div class="ph-t">'+crumb+'</div>'}
-  else head='<div class="ph-t"><h2>'+(q?'Результаты поиска':({recent:'Недавние',starred:'Избранное',shares:'Доступные мне',trash:'Корзина'})[v]||'Файлы')+'</h2></div>';
+    head='<div class="ph-t"><button class="ib sbt" data-act="sbcol" aria-label="Боковая панель">'+ic('menu',18)+'</button>'+crumb+'</div>'}
+  else head='<div class="ph-t"><button class="ib sbt" data-act="sbcol" aria-label="Боковая панель">'+ic('menu',18)+'</button><h2>'+(q?'Результаты поиска':({recent:'Недавние',starred:'Избранное',shares:'Доступные мне',trash:'Корзина'})[v]||'Файлы')+'</h2></div>';
   head+='<div class="ph-c">'+(v==='trash'&&items.length?'<button class="chip2" data-act="emptytrash">Очистить корзину</button>':'')+
     '<button class="chip2" data-act="sortmenu">'+ic('sort',16)+'<span>'+({date:'Дата загрузки',name:'Название',size:'Размер'})[S.sort]+'</span></button>'+
     '<span class="seg2"><button data-act="gridon" class="'+(S.grid?'on':'')+'" aria-label="Плитки">'+ic('grid',16)+'</button><button data-act="liston" class="'+(!S.grid?'on':'')+'" aria-label="Список">'+ic('list',16)+'</button></span>'+
@@ -1284,6 +1301,7 @@ document.addEventListener('click',function(e){
   if(a.tagName==='A')e.preventDefault();
   if(act==='login'||act==='reg')openAuth(act);
   else if(act==='logout')logout();
+  else if(act==='sbcol'){var ap3=$('.ap');if(isMobile()){S.drawer=!S.drawer;ap3.classList.toggle('dr',S.drawer)}else ap3.classList.toggle('col')}
   else if(act==='drawer'){S.drawer=!S.drawer;var ap=$('.ap');if(ap)ap.classList.toggle('dr',S.drawer)}
   else if(act==='msearch'){S.msearch=!S.msearch;var ap2=$('.ap');if(ap2)ap2.classList.toggle('ms',S.msearch);if(S.msearch)setTimeout(function(){var i=$('#apSearch');if(i)i.focus()},50);renderApp()}
   else if(act==='upmenu')pop(a,[['upfiles','Загрузить файлы','upload'],['updir','Загрузить папку','folderUp'],['newfolder','Создать папку','folderPlus']],'',isMobile()?'right':'left');
