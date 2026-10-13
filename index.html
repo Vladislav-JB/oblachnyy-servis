@@ -409,6 +409,56 @@ body.app{background:#f3f4f6}
  .ph-c .chip2 span{display:none}
  .ph-c .chip2{padding:8px 10px}
 }
+/* ===== первый экран v3 (как у оригинала) ===== */
+#site{overflow-x:clip}
+body.home header.top{background:transparent;border-bottom:0;backdrop-filter:none;position:absolute;left:0;right:0}
+body.home header.top .in{height:84px}
+.hero3{position:relative;display:grid;grid-template-columns:minmax(0,560px) minmax(0,1fr);gap:0;min-height:760px;padding:96px 0 40px;margin-bottom:24px}
+.hero3:before{content:"";position:absolute;left:-50vw;right:-50vw;top:-84px;bottom:0;background-image:linear-gradient(to right,rgba(15,23,42,.05) 1px,transparent 1px),linear-gradient(to bottom,rgba(15,23,42,.05) 1px,transparent 1px);background-size:176px 176px;-webkit-mask-image:linear-gradient(to bottom,#000 30%,transparent 95%);mask-image:linear-gradient(to bottom,#000 30%,transparent 95%);z-index:-1;pointer-events:none}
+.hero3:after{content:"";position:absolute;left:30%;top:-40px;width:60%;height:520px;background:radial-gradient(closest-side,rgba(59,130,246,.18),transparent);z-index:-1;pointer-events:none}
+.h3t{padding-top:70px}
+.h3t .badge{margin-bottom:26px}
+.h3t h1{font-size:clamp(38px,5.2vw,68px);line-height:1.04;font-weight:500;letter-spacing:-.03em;margin:0 0 26px;color:#1b1b1f}
+.h3t p{font-size:19px;line-height:1.6;font-weight:500;color:#6b7280;margin:0 0 30px;max-width:560px}
+.h3t .cta{display:flex;gap:10px;flex-wrap:wrap}
+.btn.sm2{padding:11px 22px;font-size:15px}
+.h3m{position:absolute;left:min(calc(50% + 70px),calc(100% - 640px));top:84px;width:min(900px,70vw)}
+.app2{display:grid;grid-template-columns:230px minmax(0,1fr);background:#fff;border:1px solid #e3e8f0;border-radius:22px;box-shadow:0 40px 80px -30px rgba(30,64,175,.28);min-height:640px;overflow:hidden;font-size:14px;color:#1f2937}
+.a2s{padding:16px 14px;display:flex;flex-direction:column;gap:4px;border-right:1px solid #eef1f6;background:#fbfcfe}
+.a2l{padding:2px 6px 14px}
+.a2up{background:#3b82f6;color:#fff;text-align:center;font-weight:600;border-radius:99px;padding:10px;margin-bottom:10px}
+.n2{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:12px;color:#334155}
+.n2 svg{flex:none;color:#64748b}
+.n2.on{background:#e6eefc;font-weight:600;color:#1e293b}
+.n2.sub{padding-left:22px}
+.n2.sub span{color:#475569}
+.a2q{margin-top:auto;padding:14px 6px 6px;border-top:1px solid #eef1f6}
+.a2qb{height:6px;border-radius:6px;background:#e5eaf3;overflow:hidden}
+.a2qb i{display:block;height:100%;background:#3b82f6}
+.a2q small{display:block;margin-top:8px;color:#64748b;font-size:12px}
+.a2w{display:flex;justify-content:space-between;align-items:center;padding:10px 6px;border-top:1px solid #eef1f6;margin-top:6px}
+.a2w b{display:block;font-size:13px}
+.a2w small{color:#64748b;font-size:11px}
+.a2m{padding:16px 18px}
+.a2sr{display:flex;gap:10px;align-items:center;border:1px solid #e3e8f0;border-radius:99px;padding:10px 16px;color:#64748b;margin-bottom:18px}
+.a2h{font-size:20px;margin-bottom:10px}
+.a2so{color:#64748b;font-size:13px;margin-bottom:14px}
+.a2g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.t2{border:1px solid #e5e9f1;border-radius:14px;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;min-height:176px;background:#fff}
+.t2.sel{border-color:#3b82f6;box-shadow:0 0 0 1px #3b82f6 inset}
+.t2i{flex:1;display:grid;place-items:center}
+.t2n{font-size:13px;text-align:center;color:#334155;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+@media(max-width:1100px){
+ .hero3{grid-template-columns:minmax(0,1fr);min-height:0;padding:80px 0 20px}
+ .h3t{padding-top:20px}
+ .h3m{position:static;width:100%;margin-top:36px}
+}
+@media(max-width:700px){
+ .app2{grid-template-columns:minmax(0,1fr);min-height:0}
+ .a2s{display:none}
+ .a2g{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .t2{min-height:140px}
+}
 </style>
 </head>
 <body>
@@ -635,14 +685,28 @@ function plansHtml(){
   '<p class="note">* Объёмы места на платных тарифах в демо условные. Оплата — через кошелёк сервиса: пополните его в кабинете.</p>'}
 
 function fm(){
- var fold=function(n,c){return '<div class="tl"><div class="fo"></div><span>'+n+'</span></div>'};
- var img=function(n,a,b){return '<div class="tl"><div class="th" style="background:linear-gradient(135deg,'+a+','+b+')"></div><span>'+n+'</span></div>'};
- var doc=function(n,l,c){return '<div class="tl"><div class="th dc"><b style="background:'+c+'">'+l+'</b></div><span>'+n+'</span></div>'};
- return '<div class="fmw" aria-hidden="true"><div class="fm-top"><i></i><i></i><i></i><span>Клиент «Орбита» / Макеты</span></div>'+
- '<div class="fm-b"><div class="fm-s"><div class="fs-h">Пространства</div><div class="fs on">Клиент «Орбита»</div><div class="fs">Ремонт квартиры</div><div class="fs">Личное</div>'+
- '<div class="fs-h">Разделы</div><div class="fs">Недавние</div><div class="fs">Общий доступ</div><div class="fs">Корзина</div>'+
- '<div class="fs-q"><div class="bar"><i style="width:34%"></i></div><small>0,7 из 2 ГБ</small></div></div>'+
- '<div class="fm-g">'+fold('Договоры')+fold('Логотипы')+fold('Фото')+img('hero-banner.jpg','#7dd3fc','#1d4ed8')+doc('Смета.xlsx','XLS','#16a34a')+img('mockup-2.png','#fdba74','#c2410c')+doc('Бриф.docx','DOC','#2563eb')+img('team.jpg','#a7f3d0','#047857')+doc('Договор.pdf','PDF','#dc2626')+'</div></div></div>'}
+ var S_=function(p,w){return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="'+p+'"/></svg>'};
+ var cloud='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2f6bff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4.5 4.5 0 01-.5-8.97A6 6 0 0118 10.5 3.75 3.75 0 0117.25 18H7zm5-6v4m0-4l-2 2m2-2l2 2"/></svg>';
+ var fld='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="1.6" stroke-linejoin="round"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>';
+ var chv='<svg width="10" height="10" viewBox="0 0 10 10"><path d="M3 2l4 3-4 3z" fill="#64748b"/></svg>';
+ var bigFolder='<svg viewBox="0 0 96 80" width="96" height="80" fill="none"><path d="M6 14a6 6 0 016-6h20l8 10h42a6 6 0 016 6v44a6 6 0 01-6 6H12a6 6 0 01-6-6V14z" fill="#fffaf0" stroke="#f2b134" stroke-width="3" stroke-linejoin="round"/><path d="M22 40h26M22 50h18" stroke="#f2b134" stroke-width="3" stroke-linecap="round"/></svg>';
+ var doc=function(c,l){return '<svg viewBox="0 0 64 80" width="60" height="76"><path d="M8 4h34l16 16v54a2 2 0 01-2 2H8a2 2 0 01-2-2V6a2 2 0 012-2z" fill="#fff" stroke="'+c+'" stroke-width="3" stroke-linejoin="round"/><path d="M42 4v16h16" fill="none" stroke="'+c+'" stroke-width="3" stroke-linejoin="round"/><text x="32" y="56" text-anchor="middle" font-size="20" font-weight="700" fill="'+c+'" font-family="Inter,Arial,sans-serif">'+l+'</text></svg>'};
+ var t=function(icon,name,sel){return '<div class="t2'+(sel?' sel':'')+'"><div class="t2i">'+icon+'</div><div class="t2n">'+name+'</div></div>'};
+ var ni=function(p,txt){return '<div class="n2">'+S_(p)+'<span>'+txt+'</span></div>'};
+ return '<div class="app2" aria-hidden="true">'+
+  '<div class="a2s"><div class="a2l"><span class="lg"><i></i>Тучка</span></div>'+
+  '<div class="a2up">⬆ Загрузить</div>'+
+  '<div class="n2 on">'+cloud+'<span>Все файлы</span></div>'+
+  '<div class="n2 sub">'+chv+fld+'<span>Изображения</span></div><div class="n2 sub">'+chv+fld+'<span>Документы</span></div><div class="n2 sub">'+chv+fld+'<span>Общие</span></div>'+
+  ni('M16 20v-1a4 4 0 00-4-4H7a4 4 0 00-4 4v1M9.5 11a3.5 3.5 0 100-7 3.5 3.5 0 000 7z','Доступные мне')+
+  ni('M12 21a9 9 0 100-18 9 9 0 000 18zm0-14v5l3 2','Недавние')+
+  ni('M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9L12 3z','Избранное')+
+  ni('M4 7h16M6 7l1 12a1 1 0 001 1h8a1 1 0 001-1l1-12M9 7V4h6v3','Корзина')+
+  '<div class="a2q"><div class="a2qb"><i style="width:18%"></i></div><small>Использовано 180 МБ из 1 ГБ</small></div>'+
+  '<div class="a2w"><div><b>По умолчанию</b><small>Личное рабочее пространство</small></div><span>⇅</span></div></div>'+
+  '<div class="a2m"><div class="a2sr"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round"><path d="M11 19a8 8 0 100-16 8 8 0 000 16zm10 2l-4.3-4.3"/></svg><span>Поиск файлов и папок</span></div>'+
+  '<div class="a2h"><b>Все файлы ▾</b></div><div class="a2so">⇅ Последние изменения</div>'+
+  '<div class="a2g">'+t(bigFolder,'Документы')+t(doc('#16a34a','XLS'),'Прогноз прибыли и убытков.xlsx',1)+t(doc('#2563eb','DOC'),'Бриф_на_сайт.docx')+t(bigFolder,'Изображения')+t(doc('#dc2626','PDF'),'Договор_подряда.pdf')+t(bigFolder,'Общие')+'</div></div></div>'}
 function pageHome(){
  var chk='<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="9" fill="#dbeafe"/><path d="M5 9.2l2.6 2.6L13 6.4" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
  var li=function(a){return a.map(function(x){return '<li>'+chk+'<span>'+x+'</span></li>'}).join('')};
@@ -658,11 +722,11 @@ function pageHome(){
  var m3='<div class="ui pv"><div class="pv-i"></div><div class="pv-b"><b>hero-banner.jpg</b><small>2,4 МБ · открыт в браузере</small></div></div>';
  var m4='<div class="ui"><div class="ui-h">Страница сбора</div><div class="ui-t">Материалы для сайта</div><div class="ui-s">Загрузите логотип, фото и тексты. Регистрация не нужна.</div>'+
    '<div class="dz">Перетащите файлы сюда</div><div class="ui-b">Отправить</div></div>';
- return '<div class="hero2"><div class="badge">Файлы для работы с клиентами</div>'+
-  '<h1>Облако, в котором файлы клиентов не теряются</h1>'+
-  '<p>Загружайте материалы, отправляйте ссылки с паролем и собирайте файлы от клиентов без регистрации. Для фрилансеров и небольших команд.</p>'+
-  '<div class="cta"><a class="btn rnd" href="#/app/files" data-needauth>Попробовать бесплатно</a><a class="btn rnd ghost" href="#/pricing">Тарифы</a></div></div>'+
-  fm()+
+ return '<div class="hero3"><div class="h3t"><div class="badge">Облако для работы с клиентами</div>'+
+  '<h1>Облачное хранилище для файлов, клиентов и проектов</h1>'+
+  '<p>Храните, передавайте и собирайте файлы без сложных систем. «Тучка» помогает фрилансерам и небольшим командам быстро загружать файлы, защищать ссылки и организовывать работу по проектам.</p>'+
+  '<div class="cta"><a class="btn rnd sm2" href="#/pricing">Посмотреть тарифы</a><a class="btn rnd sm2 ghost" href="#" data-act="login">Войти</a></div></div>'+
+  '<div class="h3m">'+fm()+'</div></div>'+
   blk('Безопасная передача','Отправляйте файлы и решайте, кто их увидит','Пароль и срок действия для каждой ссылки. Передумали — отозвали одним нажатием, файл остаётся у вас.',['Пароль и срок на каждую ссылку','Запрет скачивания: только просмотр','Все ссылки в одном списке'],m1,false,'<a class="lnk" href="#/p/protected-links">Подробнее о ссылках →</a>')+
   blk('Рабочие пространства','Один клиент — одно пространство','Файлы разных проектов не перемешиваются: у каждого клиента своя папка, свои участники и свои права.',['Отдельное пространство под проект','Приглашение участников','Общий счётчик места на аккаунт'],m2,true,'<a class="lnk" href="#/p/workspaces">О пространствах →</a>')+
   blk('Просмотр в браузере','Открывайте файлы, не скачивая','Фото, видео, аудио и PDF открываются сразу. Клиенту не нужно ставить программы, чтобы посмотреть макет.',['Фото, видео, аудио и PDF','Работает на телефоне и компьютере','Без рекламы'],m3,false,'')+
@@ -708,7 +772,7 @@ function parts(){var h=(location.hash||'#/').replace(/^#\/?/,'');return h.split(
 function route(){
   var p=parts(),isApp=p[0]==='app';
   if(isApp&&!S.user){go('#/');openAuth('login');return}
-  document.body.classList.toggle('app',isApp);
+  document.body.classList.toggle('app',isApp);document.body.classList.toggle('home',!isApp&&!p.length);
   window.scrollTo(0,0);
   renderNav();
   if(isApp){
