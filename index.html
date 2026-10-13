@@ -181,7 +181,7 @@ body{background:#fff;font-family:Inter,ui-sans-serif,system-ui,"Segoe UI",sans-s
 body.app{background:var(--bg)}
 :root{--acc:#3b82f6;--acc2:#60a5fa}
 header.top{background:rgba(255,255,255,.9);border-bottom:1px solid #eef1f6}
-.btn.pill{border-radius:99px;padding:13px 26px}
+.btn.rnd{border-radius:99px;padding:13px 26px}
 .hero2{padding:72px 0 40px;text-align:left;max-width:860px;position:relative}
 .hero2:before{content:"";position:absolute;right:-30%;top:-20px;width:70%;height:420px;background:radial-gradient(closest-side,rgba(59,130,246,.16),transparent);pointer-events:none;z-index:-1}
 .badge{display:inline-block;border:1px solid #cfe0ff;background:#eef5ff;color:#2563eb;font-weight:600;font-size:14px;padding:6px 14px;border-radius:99px;margin-bottom:22px}
@@ -506,21 +506,21 @@ function pageHome(){
  return '<div class="hero2"><div class="badge">Файлы для работы с клиентами</div>'+
   '<h1>Облако, в котором файлы клиентов не теряются</h1>'+
   '<p>Загружайте материалы, отправляйте ссылки с паролем и собирайте файлы от клиентов без регистрации. Для фрилансеров и небольших команд.</p>'+
-  '<div class="cta"><a class="btn pill" href="#/app/files" data-needauth>Попробовать бесплатно</a><a class="btn pill ghost" href="#/pricing">Тарифы</a></div></div>'+
+  '<div class="cta"><a class="btn rnd" href="#/app/files" data-needauth>Попробовать бесплатно</a><a class="btn rnd ghost" href="#/pricing">Тарифы</a></div></div>'+
   fm()+
   blk('Безопасная передача','Отправляйте файлы и решайте, кто их увидит','Пароль и срок действия для каждой ссылки. Передумали — отозвали одним нажатием, файл остаётся у вас.',['Пароль и срок на каждую ссылку','Запрет скачивания: только просмотр','Все ссылки в одном списке'],m1,false,'<a class="lnk" href="#/p/protected-links">Подробнее о ссылках →</a>')+
   blk('Рабочие пространства','Один клиент — одно пространство','Файлы разных проектов не перемешиваются: у каждого клиента своя папка, свои участники и свои права.',['Отдельное пространство под проект','Приглашение участников','Общий счётчик места на аккаунт'],m2,true,'<a class="lnk" href="#/p/workspaces">О пространствах →</a>')+
   blk('Просмотр в браузере','Открывайте файлы, не скачивая','Фото, видео, аудио и PDF открываются сразу. Клиенту не нужно ставить программы, чтобы посмотреть макет.',['Фото, видео, аудио и PDF','Работает на телефоне и компьютере','Без рекламы'],m3,false,'')+
   blk('Сбор файлов','Клиент загружает материалы сам','Отправьте ссылку на страницу сбора. Материалы попадут в нужное пространство, а не затеряются в переписке.',['Регистрация клиенту не нужна','Вы пишете, что именно нужно','Файлы сразу в вашем пространстве'],m4,true,'<a class="lnk" href="#/p/file-requests">О сборе файлов →</a>')+
   '<section class="tar" id="tarify"><h2>Тарифы</h2><p class="lead">Начните бесплатно, платный тариф подключается в любой момент.</p>'+plansHtml()+'</section>'+
-  '<section class="part"><div><div class="eyebrow">Партнёрская программа</div><h2>10% с первой оплаты приглашённого</h2><p>Делитесь личной ссылкой и получайте вознаграждение. Вывод через СБП от 1 000 ₽.</p></div><a class="btn pill" href="#/blog/partnerskaya-programma">Как это работает</a></section>'+
+  '<section class="part"><div><div class="eyebrow">Партнёрская программа</div><h2>10% с первой оплаты приглашённого</h2><p>Делитесь личной ссылкой и получайте вознаграждение. Вывод через СБП от 1 000 ₽.</p></div><a class="btn rnd" href="#/blog/partnerskaya-programma">Как это работает</a></section>'+
   '<section><div class="eyebrow">Блог</div><h2>Материалы</h2><div class="grid">'+BLOG.map(function(b){return '<a class="card" href="#/blog/'+b.id+'"><h3 style="margin-top:0">'+esc(b.t)+'</h3><p>'+esc(b.d)+'</p></a>'}).join('')+'</div></section>'+
   '<section class="faq"><h2>Частые вопросы</h2>'+
   '<details><summary>Нужен ли аккаунт получателю?</summary><p>Нет. Получатель открывает ссылку и смотрит или скачивает файл. Для страницы сбора файлов регистрация тоже не нужна.</p></details>'+
   '<details><summary>Что будет, если закончится место?</summary><p>Старые файлы остаются доступными, новые загрузки приостанавливаются, пока вы не освободите место или не перейдёте на другой тариф. Мы ничего не удаляем автоматически.</p></details>'+
   '<details><summary>Можно ли отменить подписку?</summary><p>Да, в любой момент. Списания прекратятся, а доступ сохранится до конца оплаченного периода.</p></details>'+
   '<details><summary>Это рабочий сервис?</summary><p>Это демонстрационный прототип интерфейса: файлы и «деньги» существуют только в вашем браузере и пропадают при обновлении страницы. Серверная часть, хранилище и платежи — следующий этап.</p></details></section>'+
-  '<section class="endcta"><h2>Начните с бесплатных 2 ГБ</h2><p>Карта не нужна.</p><a class="btn pill" href="#/app/files" data-needauth>Попробовать бесплатно</a></section>'}
+  '<section class="endcta"><h2>Начните с бесплатных 2 ГБ</h2><p>Карта не нужна.</p><a class="btn rnd" href="#/app/files" data-needauth>Попробовать бесплатно</a></section>'}
 function pagePricing(){return '<h1 class="pg">Тарифы</h1><p class="lead">Четыре тарифа: бесплатный и три платных. Переключайте период — цены пересчитаются.</p>'+plansHtml()}
 function pageScen(k){var s=SCEN[k];if(!s)return pageHome();
  return '<div class="crumb"><a href="#/">Главная</a> / '+esc(s.t)+'</div><h1 class="pg">'+esc(s.t)+'</h1><p class="lead">'+esc(s.lead)+'</p>'+
