@@ -459,6 +459,49 @@ body.home header.top .in{height:84px}
  .a2g{grid-template-columns:repeat(2,minmax(0,1fr))}
  .t2{min-height:140px}
 }
+/* ===== кабинет: подгонка размеров под оригинал ===== */
+.ap,.pop,.ap-bot{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:14px}
+.ap button,.ap input,.ap select{font-family:inherit}
+@media(min-width:901px){
+ .ap{grid-template-columns:244px minmax(0,1fr)}
+ .ap-s{padding:12px 16px 12px;gap:0}
+ .ap-lg{padding:0 0 0 32px;height:52px;display:flex;align-items:center;margin-bottom:12px}
+ .sbtn{height:36px;padding:0 16px;font-size:14px;font-weight:500;margin-bottom:0}
+ .sbtn.ghost{margin-top:12px;background:#fff;border:1px solid #e5e7eb}
+ .sn-l{margin-top:24px;gap:2px}
+ .sn{height:36px;padding:0 12px;border-radius:24px;font-size:14px;font-weight:400;color:#262626;gap:10px}
+ .sn:hover{background:rgba(38,38,38,.05)}
+ .sn.on{background:rgba(38,38,38,.07);color:#262626;font-weight:400}
+ .sn.sub{padding-left:34px}
+ .sn-l.sec{margin-top:14px;padding-top:0;border-top:0}
+ .stor{padding:12px 12px 0;font-size:12px}
+ .stor-t{font-size:12px;font-weight:500;color:#262626}
+ .stor .pl{margin-top:10px;font-size:12px}
+ .wsw{margin:14px 0 4px;display:flex;justify-content:space-between;align-items:center;gap:8px;border:0;background:none;padding:10px 12px;border-top:1px solid #e5e7eb;cursor:pointer;text-align:left;color:#262626}
+ .wsw b{display:block;font-size:13px;font-weight:600}
+ .wsw small{color:#6b7280;font-size:11px}
+ .ap-m{padding:8px 16px 8px 0}
+ .ap-top{height:54px;padding:0;gap:12px;align-items:flex-start;margin-top:0}
+ .srch{height:46px;max-width:720px;border:0;box-shadow:0 1px 2px rgba(0,0,0,.08);padding:0 18px;font-size:15px}
+ .wal{height:36px;margin-top:5px;border:0;padding:0 14px;box-shadow:0 1px 2px rgba(0,0,0,.08);font-weight:500}
+ .ib{margin-top:5px;width:36px;height:36px}
+ .usr{margin-top:5px;height:36px;padding:0 10px 0 4px;gap:8px;font-weight:400}
+ .usr b{width:28px;height:28px;font-size:13px}
+ .ap-panel{border-radius:24px;box-shadow:0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06)}
+ .ph{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:8px;padding:10px 20px;border-bottom:0}
+ .ph-t{font-size:18px;font-weight:500}
+ .ph-t h2,.cb,.cur{font-size:18px;font-weight:500}
+ .ph-c{display:contents}
+ .ph-c .seg2{grid-column:2;grid-row:1}
+ .ph-c .ib.d{grid-column:3;grid-row:1;margin:0}
+ .ph-c .chip2{grid-column:1;grid-row:2;justify-self:start;height:36px;padding:0 14px;box-shadow:0 1px 2px rgba(0,0,0,.08);border:0;margin-top:6px;font-size:14px}
+ .ph-c .chip2[data-act=emptytrash]{grid-column:2/4;justify-self:end}
+ .seg2{padding:0;background:none;height:36px;align-items:center;gap:2px}
+ .seg2 button{width:52px;height:30px;border-radius:24px}
+ .seg2 button.on{background:#f5f5f5;box-shadow:none;color:#262626}
+ .pb{border-top:0}
+ .pg-h h2{font-size:22px;font-weight:500}
+}
 </style>
 </head>
 <body>
@@ -894,6 +937,10 @@ function pop(anchor,items,id,align){
 
 /* --- построение кабинета --- */
 function navItem(v,icon,label,extra){return '<button class="sn'+(S.view===v?' on':'')+'" data-go="#/app/'+v+'">'+ic(icon,18)+'<span>'+label+'</span>'+(extra||'')+'</button>'}
+function treeHtml(){
+  var fo='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>';
+  var arr=S.files.filter(function(f){return !f.trash&&f.k==='folder'&&!f.parent&&f.ws===S.curWs}).sort(function(a,b){return a.name.localeCompare(b.name,'ru')});
+  return arr.map(function(f){return '<button class="sn sub'+(S.view==='files'&&S.parent===f.id?' on':'')+'" data-go="#/app/files/'+f.id+'">'+fo+'<span>'+esc(f.name)+'</span></button>'}).join('')}
 function renderApp(){
   var u=used(),lim=limit(),pct=Math.max(u?1:0,Math.min(100,u/lim*100));
   var av=(S.user&&S.user.email||'U').charAt(0).toUpperCase(),nm=S.user?S.user.email.split('@')[0]:'';
@@ -904,10 +951,10 @@ function renderApp(){
      '<a class="ap-lg" href="#/">'+logoSvg()+'</a>'+
      '<button class="sbtn" data-act="upmenu">'+ic('upload',18)+'<span>Загрузить</span></button>'+
      '<button class="sbtn ghost" data-act="tour">'+ic('spark',18)+'<span>Экскурсия по облаку</span></button>'+
-     '<nav class="sn-l">'+navItem('files','home','Все файлы')+navItem('shares','users','Доступные мне')+navItem('recent','clock','Недавние')+navItem('starred','star','Избранное')+navItem('trash','trash','Корзина')+'</nav>'+
+     '<nav class="sn-l">'+navItem('files','home','Все файлы')+treeHtml()+navItem('shares','users','Доступные мне')+navItem('recent','clock','Недавние')+navItem('starred','star','Избранное')+navItem('trash','trash','Корзина')+'</nav>'+
      '<nav class="sn-l sec">'+navItem('support','support','Поддержка')+navItem('partner','heart','Партнёрство')+'</nav>'+
      '<div class="stor"><div class="stor-t">'+ic('db',16)+'<span>Использовано '+fmt(u)+' из '+plan(S.plan).gb+' ГБ</span></div><div class="bar"><i style="width:'+pct+'%"></i></div>'+
-     '<a class="pl" href="#/pricing">Улучшить тариф</a></div>'+
+     '<a class="pl" href="#/pricing">Улучшить тариф</a></div>'+'<button class="wsw" data-act="wsmenu"><span><b>'+esc(S.curWs?wsName(S.curWs):'По умолчанию')+'</b><small>'+(S.curWs?'Рабочее пространство':'Личное рабочее пространство')+'</small></span>'+ic('sort',16)+'</button>'+
    '</aside>'+
    '<div class="ap-m">'+
      '<div class="ap-top">'+
